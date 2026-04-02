@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(curl -s \"https://api.themoviedb.org/3/search/tv?api_key=3fd2be6f0c70a2a598f084ddfb75487c&query=Pororo+the+Little+Penguin&language=ko-KR\")",
+      "Bash(python3 -m json.tool)",
+      "WebFetch(domain:www.themoviedb.org)",
+      "WebSearch",
+      "mcp__claude_ai_Figma__get_design_context"
     ]
   }
 }

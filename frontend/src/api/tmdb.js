@@ -29,6 +29,91 @@ export const fetchKidsMovies = async () => {
   }
 };
 
+// 주니어 콘텐츠 (8-12세, 어드벤처+애니+가족)
+export const fetchJuniorMovies = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/discover/movie`, {
+      params: {
+        api_key: API_KEY,
+        language: 'ko-KR',
+        with_genres: '12,16,10751',
+        certification_country: 'US',
+        'certification.lte': 'PG',
+        sort_by: 'popularity.desc',
+      }
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error("주니어 로드 실패:", error);
+    return [];
+  }
+};
+
+// 주니어 드라마 (드라마+가족)
+export const fetchJuniorDrama = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/discover/movie`, {
+      params: {
+        api_key: API_KEY,
+        language: 'ko-KR',
+        with_genres: '18,10751',
+        certification_country: 'US',
+        'certification.lte': 'PG',
+        sort_by: 'vote_average.desc',
+        'vote_count.gte': 100,
+      }
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error("주니어 드라마 로드 실패:", error);
+    return [];
+  }
+};
+
+// 최신 키즈 콘텐츠 (개봉일 최신순)
+export const fetchLatestKidsMovies = async () => {
+  const today = new Date().toISOString().split('T')[0];
+  try {
+    const response = await axios.get(`${BASE_URL}/discover/movie`, {
+      params: {
+        api_key: API_KEY,
+        language: 'ko-KR',
+        with_genres: '16,10751',
+        certification_country: 'US',
+        'certification.lte': 'G',
+        sort_by: 'release_date.desc',
+        'primary_release_date.lte': today,
+      }
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error("최신 키즈 로드 실패:", error);
+    return [];
+  }
+};
+
+// 최신 주니어 콘텐츠 (개봉일 최신순)
+export const fetchLatestJuniorMovies = async () => {
+  const today = new Date().toISOString().split('T')[0];
+  try {
+    const response = await axios.get(`${BASE_URL}/discover/movie`, {
+      params: {
+        api_key: API_KEY,
+        language: 'ko-KR',
+        with_genres: '12,16,10751',
+        certification_country: 'US',
+        'certification.lte': 'PG',
+        sort_by: 'release_date.desc',
+        'primary_release_date.lte': today,
+      }
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error("최신 주니어 로드 실패:", error);
+    return [];
+  }
+};
+
 // 트렌딩 가져오기
 export const fetchTrending = async () => {
   try {

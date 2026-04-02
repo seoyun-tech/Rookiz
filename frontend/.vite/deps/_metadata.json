@@ -1,0 +1,106 @@
+{
+  "hash": "e9363164",
+  "configHash": "c401c39f",
+  "lockfileHash": "980c10de",
+  "browserHash": "4f81c945",
+  "optimized": {
+    "@fortawesome/free-solid-svg-icons": {
+      "src": "../../node_modules/@fortawesome/free-solid-svg-icons/index.mjs",
+      "file": "@fortawesome_free-solid-svg-icons.js",
+      "fileHash": "5e772ab5",
+      "needsInterop": false
+    },
+    "@fortawesome/react-fontawesome": {
+      "src": "../../node_modules/@fortawesome/react-fontawesome/dist/index.js",
+      "file": "@fortawesome_react-fontawesome.js",
+      "fileHash": "f44d7117",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "5a2b275d",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "9ca44fc2",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "b46adef2",
+      "needsInterop": true
+    },
+    "react-player": {
+      "src": "../../node_modules/react-player/dist/index.js",
+      "file": "react-player.js",
+      "fileHash": "42850a31",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "1501a48c",
+      "needsInterop": false
+    },
+    "tailwind-merge": {
+      "src": "../../node_modules/tailwind-merge/dist/bundle-mjs.mjs",
+      "file": "tailwind-merge.js",
+      "fileHash": "f8f50075",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "react-TLBLJAKK": {
+      "file": "react-TLBLJAKK.js"
+    },
+    "react-BTG5RUCV": {
+      "file": "react-BTG5RUCV.js"
+    },
+    "Preview-MJGNLKLI": {
+      "file": "Preview-MJGNLKLI.js"
+    },
+    "react-ETR3VC4H": {
+      "file": "react-ETR3VC4H.js"
+    },
+    "dash.all.min-FIKUSZBE": {
+      "file": "dash__all__min-FIKUSZBE.js"
+    },
+    "react-C53KO7H6": {
+      "file": "react-C53KO7H6.js"
+    },
+    "dist-KG5XARWD": {
+      "file": "dist-KG5XARWD.js"
+    },
+    "chunk-WS7XOGYO": {
+      "file": "chunk-WS7XOGYO.js"
+    },
+    "chunk-JNOWYTQG": {
+      "file": "chunk-JNOWYTQG.js"
+    },
+    "react-6DQMCM7Z": {
+      "file": "react-6DQMCM7Z.js"
+    },
+    "react-225U6IK3": {
+      "file": "react-225U6IK3.js"
+    },
+    "chunk-YUNDCQ6T": {
+      "file": "chunk-YUNDCQ6T.js"
+    },
+    "react-HZJDIYE5": {
+      "file": "react-HZJDIYE5.js"
+    },
+    "react-H5PWGRPT": {
+      "file": "react-H5PWGRPT.js"
+    },
+    "chunk-VX2H6PUQ": {
+      "file": "chunk-VX2H6PUQ.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}

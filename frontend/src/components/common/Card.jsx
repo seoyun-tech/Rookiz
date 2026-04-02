@@ -5,9 +5,9 @@ import { twMerge } from 'tailwind-merge';
  */
 export function Card({ title, image, size = 'md', className, children, onClick }) {
   const sizeStyles = {
-    lg: 'w-full aspect-[2/1] rounded-4xl p-10',
-    md: 'w-full aspect-[4/3] rounded-3xl p-6',
-    sm: 'w-full aspect-square rounded-2xl p-4',
+    lg: "w-full aspect-[2/1] rounded-[48px] p-10",
+    md: "w-full aspect-[4/3] rounded-[48px] p-6",
+    sm: "w-full aspect-square rounded-[48px] p-4",
   };
 
   const titleStyles = {
