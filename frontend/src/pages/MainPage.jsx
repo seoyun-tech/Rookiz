@@ -14,29 +14,26 @@ import {
   faPlay,
   faCircleInfo,
 } from "@fortawesome/free-solid-svg-icons";
-import { fetchTrending, fetchKidsMovies, getImageUrl } from "../api/tmdb";
+import { fetchTrending, fetchKidsMovies, fetchLatestKidsMovies, getImageUrl } from "../api/tmdb";
 
-// Figma Asset URLs
-const ASSETS = {
-  hero: "https://www.figma.com/api/mcp/asset/9126fefa-7ade-4a89-93c2-9b3290519fef",
-  science:
-    "https://www.figma.com/api/mcp/asset/f557dff7-8537-4eeb-85fe-8fd66aeee8fc",
-  fox: "https://www.figma.com/api/mcp/asset/42e9fffd-cea1-40f3-8f77-4af03465f840",
-  lion: "https://www.figma.com/api/mcp/asset/69c946b5-64e5-4c2c-8278-32bf85f0382e",
-  aiRoo:
-    "https://www.figma.com/api/mcp/asset/72ba9870-e738-4c0f-9884-a7b11cfa61cc",
-  union:
-    "https://www.figma.com/api/mcp/asset/12d1485c-a58c-4176-ae3a-0b55dc1a20c4",
-};
+const CHARACTERS = [
+  { id: 1, name: "뽀로로",   poster_path: "/nJG4ieTjuZZWHBeh4wqsKv5JGJM.jpg" },
+  { id: 2, name: "티니핑",   poster_path: "/rY8QGWz7xdsBx6Em1WnpqQZ2oIU.jpg" },
+  { id: 3, name: "스폰지밥", poster_path: "/m37FIo3qXvtNWqqqmveWWd1lJlH.jpg" },
+  { id: 4, name: "포켓몬",   poster_path: "/vaXQOBNdQVtxUMN96cR4qQRxmoQ.jpg" },
+  { id: 5, name: "핑구",     poster_path: "/mc1gBxnqdXCvwQSfNYrBzes5trp.jpg" },
+];
 
 export default function MainPage() {
   const [trending, setTrending] = useState([]);
   const [kidsMovies, setKidsMovies] = useState([]);
+  const [latestMovies, setLatestMovies] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchTrending().then(setTrending).catch(console.error);
     fetchKidsMovies().then(setKidsMovies).catch(console.error);
+    fetchLatestKidsMovies().then(setLatestMovies).catch(console.error);
   }, []);
 
   return (
@@ -47,7 +44,7 @@ export default function MainPage() {
       <section className="w-full max-w-[1280px] px-4 md:px-10 pt-4 md:pt-6 pb-6 md:pb-10">
         <div className="relative w-full aspect-[16/9] md:aspect-[2/1] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm mx-auto">
           <img
-            src={ASSETS.hero}
+            src={getImageUrl(trending[0]?.backdrop_path, "original")}
             className="absolute inset-0 w-full h-full object-cover"
             alt="슈퍼 히어로 특공대"
           />
@@ -92,21 +89,22 @@ export default function MainPage() {
         {/* Age Selection */}
         <div className="px-4 md:px-10 flex gap-2 md:gap-3.5 overflow-x-auto scrollbar-hide">
           <AgeButton label="키즈 4~7세" active />
-          <AgeButton label="주니어 8~12세" />
+          <AgeButton label="주니어 8~12세" onClick={() => navigate("/junior")} />
         </div>
 
         {/* Sections */}
         <div className="flex flex-col gap-8 md:gap-10 pb-20">
           <ContentRow title="이어보기" className="px-4 md:px-10">
             <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide">
-              {[1, 2, 3, 4].map((i) => (
+              {kidsMovies.slice(0, 4).map((movie) => (
                 <div
-                  key={i}
+                  key={movie.id}
                   className="flex flex-col gap-2 md:gap-2.5 min-w-[240px] md:min-w-[320px]"
                 >
                   <div className="relative h-[140px] md:h-[180px] rounded-2xl md:rounded-3xl overflow-hidden group">
                     <img
-                      src={ASSETS.fox}
+                      src={getImageUrl(movie.backdrop_path || movie.poster_path)}
+                      alt={movie.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/50">
@@ -115,7 +113,7 @@ export default function MainPage() {
                   </div>
                   <div>
                     <h4 className="text-lg md:text-2xl font-bold text-gray-800">
-                      여우들의 비밀
+                      {movie.title}
                     </h4>
                     <p className="text-sm md:text-lg font-medium text-gray-500">
                       10분 남음
@@ -146,7 +144,7 @@ export default function MainPage() {
                     onClick={() => navigate(`/movie/${item.id}`)}
                   >
                     <span className="text-xs md:text-sm font-semibold text-yellow-400 mt-0.5 md:mt-1">
-                      ★ {item.vote_average?.toFixed(1)}
+                      <FontAwesomeIcon icon={faStar} /> {item.vote_average?.toFixed(1)}
                     </span>
                   </Card>
                 </div>
@@ -156,11 +154,11 @@ export default function MainPage() {
 
           {/* 인기 있는 캐릭터! */}
           <CharacterRow>
-            {[1, 2, 3, 4, 5].map((i) => (
+            {CHARACTERS.map((char) => (
               <CharacterCard
-                key={i}
-                name="사자선생님"
-                image={ASSETS.lion}
+                key={char.id}
+                name={char.name}
+                image={getImageUrl(char.poster_path)}
               />
             ))}
           </CharacterRow>
@@ -184,7 +182,30 @@ export default function MainPage() {
                     {movie.title}
                   </div>
                   <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-black/50 text-yellow-400 text-xs md:text-sm font-bold px-2 py-0.5 md:py-1 rounded-full">
-                    ★ {movie.vote_average?.toFixed(1)}
+                    <FontAwesomeIcon icon={faStar} /> {movie.vote_average?.toFixed(1)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ContentRow>
+
+          {/* 최신 콘텐츠 */}
+          <ContentRow title="최신 콘텐츠" className="px-4 md:px-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+              {latestMovies.slice(0, 4).map((movie) => (
+                <div
+                  key={movie.id}
+                  className="aspect-[3/4] md:h-[360px] rounded-2xl md:rounded-[50px] overflow-hidden relative group cursor-pointer shadow-sm"
+                  onClick={() => navigate(`/movie/${movie.id}`)}
+                >
+                  <img
+                    src={getImageUrl(movie.poster_path)}
+                    alt={movie.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-3 md:bottom-6 md:left-6 md:right-4 text-white text-sm md:text-[21px] font-black leading-snug line-clamp-2">
+                    {movie.title}
                   </div>
                 </div>
               ))}
