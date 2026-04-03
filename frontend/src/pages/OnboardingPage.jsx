@@ -2,19 +2,48 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck, faArrowLeft, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { StepIndicator } from "../components/common/StepIndicator";
 import { LoginCharacter } from "../components/common/LoginCharacter";
 import { LoginInput } from "../components/common/LoginInput";
 import { LoginBtn } from "../components/common/LoginBtn";
 
+const INTRO_VIDEO_ID = "1fD2J996HhR2d321B8eBKo5WhKCp6AWHk";
+
 /* ── Step 1: 계정 생성 ────────────────────────────────── */
 function StepIntro({ form, onChange, onNext }) {
+  const [playing, setPlaying] = useState(false);
   const isValid = form.name.trim() && form.email.trim() && form.password.trim();
 
   return (
     <div className="flex flex-col items-center w-full max-w-[384px] px-4 gap-5 pb-25">
-      <LoginCharacter />
+      {/* 동그란 영상 + 타이틀 */}
+      <div className="relative flex flex-col items-center w-[346px]">
+        {/* 원 — 텍스트 박스 뒤에 배치 (z-0) */}
+        <div className="size-[220px] rounded-full overflow-hidden shadow-lg z-0 relative bg-primary-100">
+          {!playing ? (
+            <div
+              onClick={() => setPlaying(true)}
+              className="w-full h-full flex items-center justify-center cursor-pointer hover:bg-primary-200 transition-colors"
+            >
+              <div className="size-16 rounded-full bg-primary-500 flex items-center justify-center shadow-md">
+                <FontAwesomeIcon icon={faPlay} className="text-white text-xl ml-1" />
+              </div>
+            </div>
+          ) : (
+            <iframe
+              src={`https://drive.google.com/file/d/${INTRO_VIDEO_ID}/preview?autoplay=1`}
+              className="absolute w-[350px] h-[400px] border-0 left-1/2 top-[90%] -translate-x-1/2 -translate-y-1/2"
+              allow="autoplay"
+            />
+          )}
+        </div>
+        {/* 텍스트 박스 — 원 위에 (z-10), 원을 살짝 덮음 */}
+        <div className="w-full backdrop-blur-sm bg-white/38 rounded-3xl shadow-md px-6 py-3 -mt-6 z-10 relative text-center">
+          <p className="text-xl font-extrabold text-primary-950">Rookiz에 오신 걸 환영해요!</p>
+          <p className="text-sm text-gray-500 mt-1">계정을 만들고 즐거운 여정을 시작하세요</p>
+        </div>
+      </div>
 
       <LoginInput
         label="이름"

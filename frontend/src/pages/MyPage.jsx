@@ -98,10 +98,6 @@ export default function MyPage() {
                   </div>
                 </div>
               ))}
-              <button className="flex items-center gap-2 text-gray-500 font-bold hover:text-gray-800 transition-colors shrink-0">
-                <FontAwesomeIcon icon={faPencil} className="text-sm" />
-                <span className="text-sm md:text-base">프로필 수정</span>
-              </button>
             </div>
           </div>
         </section>
