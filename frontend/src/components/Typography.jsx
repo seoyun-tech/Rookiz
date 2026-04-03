@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-// Heading
+// 제목
 export function Heading({ as: Tag = 'h2', size = '3xl', className, children, ...props }) {
   const sizeMap = {
     '7xl': 'text-7xl font-extrabold leading-10',
@@ -22,7 +22,7 @@ export function Heading({ as: Tag = 'h2', size = '3xl', className, children, ...
   );
 }
 
-// Body text
+// 본문 텍스트
 export function Text({ size = 'base', muted = false, className, children, ...props }) {
   const sizeMap = {
     lg:   'text-lg leading-4',

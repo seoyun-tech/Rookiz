@@ -16,7 +16,7 @@ export function Card({ variant = 'default', title, image, size = 'md', badge, cl
   if (variant === 'poster') {
     return (
       <div
-        className="aspect-[3/4] md:h-[360px] rounded-2xl md:rounded-[50px] overflow-hidden relative group cursor-pointer shadow-sm"
+        className="aspect-[3/4] md:h-[360px] rounded-2xl md:rounded-4xl overflow-hidden relative group cursor-pointer shadow-sm"
         onClick={onClick}
       >
         <img
@@ -34,9 +34,9 @@ export function Card({ variant = 'default', title, image, size = 'md', badge, cl
   }
 
   const sizeStyles = {
-    lg: 'w-full aspect-[2/1] rounded-[48px] p-10',
-    md: 'w-full aspect-[4/3] rounded-[48px] p-6',
-    sm: 'w-full aspect-square rounded-[48px] p-4',
+    lg: 'w-full aspect-[2/1] rounded-4xl p-10',
+    md: 'w-full aspect-[4/3] rounded-4xl p-6',
+    sm: 'w-full aspect-square rounded-4xl p-4',
   };
 
   const titleStyles = {

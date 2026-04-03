@@ -2,16 +2,12 @@ import { twMerge } from 'tailwind-merge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 
-/**
- * Search Bar Component
- * @param {string} placeholder - Input placeholder
- * @param {function} onSearch - Search callback
- */
+/** 검색바 컴포넌트 */
 export function Searchbar({ placeholder = "제목, 장르, 캐릭터 검색...", onSearch, className }) {
   return (
     <div 
       className={twMerge(
-        'w-full h-14 md:h-20 bg-white border-2 md:border-4 border-primary-500 rounded-2xl md:rounded-[24px] flex items-center px-4 md:px-8 gap-3 md:gap-4 shadow-sm',
+        'w-full h-14 md:h-20 bg-white border-2 md:border-4 border-primary-500 rounded-2xl md:rounded-3xl flex items-center px-4 md:px-8 gap-3 md:gap-4 shadow-sm',
         className
       )}
     >

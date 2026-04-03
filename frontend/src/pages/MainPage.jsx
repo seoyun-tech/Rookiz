@@ -61,7 +61,7 @@ export default function MainPage() {
         onDetail={() => trending[0] && openDetailById(trending[0].id)}
       />
 
-      <main className="w-full max-w-[1280px] flex flex-col gap-6 md:gap-10">
+      <main className="w-full max-w-container flex flex-col gap-6 md:gap-10">
         <AgeTabGroup activeMode="kids" />
 
         <div className="flex flex-col gap-8 md:gap-10 pb-20">

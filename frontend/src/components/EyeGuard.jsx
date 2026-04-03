@@ -1,23 +1,19 @@
+import { twMerge } from "tailwind-merge";
 import { useEyeGuard, WARN_RATIO } from "../hooks/useEyeGuard";
-
-const MSGS = {
-  noface:  { text: "얼굴이 감지되지 않습니다",           icon: "?",  color: "var(--color-status-inactive)" },
-  ok:      { text: "적정 거리입니다",                     icon: "✓",  color: "var(--color-status-ok)" },
-  caution: { text: "조금 멀어지세요",                     icon: "!",  color: "var(--color-status-caution)" },
-  danger:  { text: "너무 가깝습니다!\n화면에서 멀어지세요", icon: "⚠", color: "var(--color-status-danger)" },
-  loading: { text: "모델 로딩 중...",                     icon: "⏳", color: "var(--color-status-loading)" },
-};
+import {
+  EYE_STATUS,
+  STATUS_TEXT,
+  STATUS_BG_LIGHT,
+  STATUS_BORDER,
+  GAUGE_BG,
+} from "../constants/eyeGuard";
 
 export function EyeGuard() {
   const { videoRef, status, ratio, running, start, stop } = useEyeGuard();
 
-  const msg = MSGS[status];
+  const msg = EYE_STATUS[status];
   const pct = Math.min(ratio / WARN_RATIO, 1);
-  const gaugeColor = status === "danger"
-    ? "var(--color-status-danger)"
-    : status === "caution"
-    ? "var(--color-status-caution)"
-    : "var(--color-status-ok)";
+  const isDanger = status === "danger";
 
   return (
     <div className="min-h-screen bg-dark-900 flex flex-col items-center justify-center text-dark-50 p-6 gap-6 font-sans">
@@ -42,8 +38,11 @@ export function EyeGuard() {
         )}
         {running && (
           <div
-            className="absolute top-2.5 left-1/2 -translate-x-1/2 bg-black/70 rounded-full px-3.5 py-1 text-[11px] whitespace-nowrap backdrop-blur-sm border"
-            style={{ color: msg.color, borderColor: `${msg.color}44` }}
+            className={twMerge(
+              "absolute top-2.5 left-1/2 -translate-x-1/2 bg-black/70 rounded-full px-3.5 py-1 text-[11px] whitespace-nowrap backdrop-blur-sm border",
+              STATUS_TEXT[status],
+              STATUS_BORDER[status]
+            )}
           >
             {msg.icon} {msg.text.split("\n")[0]}
           </div>
@@ -57,12 +56,8 @@ export function EyeGuard() {
         </div>
         <div className="h-2 bg-dark-900 rounded overflow-hidden">
           <div
-            className="h-full rounded transition-[width] duration-150 ease-linear"
-            style={{
-              width: `${pct * 100}%`,
-              background: gaugeColor,
-              boxShadow: running ? `0 0 8px ${gaugeColor}88` : "none",
-            }}
+            className={twMerge("h-full rounded transition-[width] duration-150 ease-linear", GAUGE_BG[status])}
+            style={{ width: `${pct * 100}%` }}
           />
         </div>
         <div className="text-center mt-1.5 text-[11px] text-dark-500">
@@ -71,18 +66,20 @@ export function EyeGuard() {
       </div>
 
       <div
-        className="w-[280px] min-h-[72px] rounded-xl flex flex-col items-center justify-center gap-1 p-3 border transition-all duration-300"
-        style={{
-          background:  running ? `${msg.color}11` : "var(--color-dark-600)",
-          borderColor: running ? `${msg.color}44` : "var(--color-dark-500)",
-        }}
+        className={twMerge(
+          "w-[280px] min-h-[72px] rounded-xl flex flex-col items-center justify-center gap-1 p-3 border transition-all duration-300",
+          running ? `${STATUS_BG_LIGHT[status]} ${STATUS_BORDER[status]}` : "bg-dark-600 border-dark-500"
+        )}
       >
-        <div className="transition-[font-size] duration-300" style={{ fontSize: status === "danger" ? "32px" : "24px" }}>
+        <div className={twMerge("transition-[font-size] duration-300", isDanger ? "text-[32px]" : "text-2xl")}>
           {msg.icon}
         </div>
         <div
-          className={`text-[13px] text-center leading-relaxed whitespace-pre-line ${status === "danger" ? "font-bold" : "font-normal"}`}
-          style={{ color: running ? msg.color : "var(--color-dark-300)" }}
+          className={twMerge(
+            "text-[13px] text-center leading-relaxed whitespace-pre-line",
+            isDanger ? "font-bold" : "font-normal",
+            running ? STATUS_TEXT[status] : "text-dark-300"
+          )}
         >
           {msg.text}
         </div>
@@ -91,13 +88,14 @@ export function EyeGuard() {
       <button
         onClick={running ? stop : start}
         disabled={status === "loading"}
-        className={`px-10 py-3 rounded-lg text-sm font-semibold border-0 tracking-wide transition-colors ${
+        className={twMerge(
+          "px-10 py-3 rounded-lg text-sm font-semibold border-0 tracking-wide transition-colors",
           status === "loading"
             ? "bg-dark-600 text-dark-500 cursor-not-allowed"
             : running
             ? "bg-dark-900 text-dark-300 cursor-pointer"
             : "bg-dark-action text-white cursor-pointer"
-        }`}
+        )}
       >
         {status === "loading" ? "로딩 중..." : running ? "중지" : "시작"}
       </button>
