@@ -7,13 +7,15 @@ import MainPageJunior from "./pages/MainPageJunior";
 import SearchPage from "./pages/SearchPage";
 import MyPage from "./pages/MyPage";
 import DetailPage from "./pages/DetailPage";
+import OnboardingPage from "./pages/OnboardingPage";
 import "./styles/index.css";
 
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
-      { path: "/",              element: <MainPage /> },
+      { path: "/",              element: <OnboardingPage /> },
+      { path: "/home",          element: <MainPage /> },
       { path: "/junior",        element: <MainPageJunior /> },
       { path: "/search",        element: <SearchPage /> },
       { path: "/mypage",        element: <MyPage /> },

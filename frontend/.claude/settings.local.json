@@ -1,10 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "mcp__claude_ai_Figma__whoami",
       "mcp__claude_ai_Figma__get_design_context",
-      "mcp__claude_ai_Figma__get_metadata",
-      "Bash(npm install:*)"
+      "Read(//e/Rookiz/frontend/**)",
+      "Bash(npm run:*)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/64f2a148-cfde-49e8-b445-8565c85197a8\" -o \"E:/Rookiz/frontend/public/roo-character.png\")",
+      "Bash(npx vite:*)"
     ]
   }
 }
