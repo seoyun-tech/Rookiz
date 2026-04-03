@@ -14,7 +14,13 @@ import {
   faPlay,
   faCircleInfo,
 } from "@fortawesome/free-solid-svg-icons";
-import { fetchTrending, fetchKidsMovies, fetchLatestKidsMovies, getImageUrl } from "../api/tmdb";
+import {
+  fetchTrending,
+  fetchKidsMovies,
+  fetchLatestKidsMovies,
+  getImageUrl,
+  fetchEnglishKidsContent,
+} from "../api/tmdb";
 
 const CHARACTERS = [
   { id: 1, name: "뽀로로",   poster_path: "/nJG4ieTjuZZWHBeh4wqsKv5JGJM.jpg" },
@@ -28,12 +34,15 @@ export default function MainPage() {
   const [trending, setTrending] = useState([]);
   const [kidsMovies, setKidsMovies] = useState([]);
   const [latestMovies, setLatestMovies] = useState([]);
+  const [englishContent, setEnglishContent] = useState([]);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     fetchTrending().then(setTrending).catch(console.error);
     fetchKidsMovies().then(setKidsMovies).catch(console.error);
     fetchLatestKidsMovies().then(setLatestMovies).catch(console.error);
+    fetchEnglishKidsContent().then(setEnglishContent).catch(console.error);
   }, []);
 
   return (
@@ -89,41 +98,41 @@ export default function MainPage() {
         {/* Age Selection */}
         <div className="px-4 md:px-10 flex gap-2 md:gap-3.5 overflow-x-auto scrollbar-hide">
           <AgeButton label="키즈 4~7세" active />
-          <AgeButton label="주니어 8~12세" onClick={() => navigate("/junior")} />
+          <AgeButton
+            label="주니어 8~12세"
+            onClick={() => navigate("/junior")}
+          />
         </div>
 
         {/* Sections */}
         <div className="flex flex-col gap-8 md:gap-10 pb-20">
-          <ContentRow title="이어보기" className="px-4 md:px-10">
-            <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide">
-              {kidsMovies.slice(0, 4).map((movie) => (
-                <div
-                  key={movie.id}
-                  className="flex flex-col gap-2 md:gap-2.5 min-w-[240px] md:min-w-[320px]"
-                >
-                  <div className="relative h-[140px] md:h-[180px] rounded-2xl md:rounded-3xl overflow-hidden group">
+          <ContentRow title="글로벌 루키즈! 영어로 배워요" className="px-4 md:px-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+              {englishContent
+                .filter((item) => item.original_language === "en") // 영어만
+                .slice(0, 4)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="aspect-[3/4] md:h-[360px] rounded-2xl md:rounded-[50px] overflow-hidden relative group cursor-pointer shadow-sm"
+                    onClick={() => navigate(`/movie/${item.id}?type=tv`)}
+                  >
                     <img
-                      src={getImageUrl(movie.backdrop_path || movie.poster_path)}
-                      alt={movie.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      src={getImageUrl(item.poster_path)}
+                      alt={item.name || item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/50">
-                      <div className="bg-primary-500 h-full w-1/2" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-3 md:bottom-6 md:left-6 md:right-4 text-white text-sm md:text-[21px] font-black leading-snug line-clamp-2">
+                      {item.name || item.title}
+                    </div>
+                    <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 md:py-1 rounded-full">
+                      🇺🇸 ENG
                     </div>
                   </div>
-                  <div>
-                    <h4 className="text-lg md:text-2xl font-bold text-gray-800">
-                      {movie.title}
-                    </h4>
-                    <p className="text-sm md:text-lg font-medium text-gray-500">
-                      10분 남음
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </ContentRow>
-
           {/* 루의 추천 - 주간 트렌딩 */}
           <ContentRow title="루의 추천" className="px-4 md:px-10">
             <div className="grid grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-4 md:gap-10">
@@ -144,14 +153,14 @@ export default function MainPage() {
                     onClick={() => navigate(`/movie/${item.id}`)}
                   >
                     <span className="text-xs md:text-sm font-semibold text-yellow-400 mt-0.5 md:mt-1">
-                      <FontAwesomeIcon icon={faStar} /> {item.vote_average?.toFixed(1)}
+                      <FontAwesomeIcon icon={faStar} />{" "}
+                      {item.vote_average?.toFixed(1)}
                     </span>
                   </Card>
                 </div>
               ))}
             </div>
           </ContentRow>
-
           {/* 인기 있는 캐릭터! */}
           <CharacterRow>
             {CHARACTERS.map((char) => (
@@ -162,7 +171,6 @@ export default function MainPage() {
               />
             ))}
           </CharacterRow>
-
           {/* 인기 콘텐츠 - 키즈 영화 */}
           <ContentRow title="인기 콘텐츠" className="px-4 md:px-10">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
@@ -182,13 +190,13 @@ export default function MainPage() {
                     {movie.title}
                   </div>
                   <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-black/50 text-yellow-400 text-xs md:text-sm font-bold px-2 py-0.5 md:py-1 rounded-full">
-                    <FontAwesomeIcon icon={faStar} /> {movie.vote_average?.toFixed(1)}
+                    <FontAwesomeIcon icon={faStar} />{" "}
+                    {movie.vote_average?.toFixed(1)}
                   </div>
                 </div>
               ))}
             </div>
           </ContentRow>
-
           {/* 최신 콘텐츠 */}
           <ContentRow title="최신 콘텐츠" className="px-4 md:px-10">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
@@ -211,7 +219,6 @@ export default function MainPage() {
               ))}
             </div>
           </ContentRow>
-
           {/* 프리미엄 배너 */}
           <div className="mx-4 md:mx-10 min-h-[120px] md:h-[160px] bg-blue-900 rounded-2xl md:rounded-4xl flex flex-col md:flex-row items-start md:items-center justify-between p-6 md:px-8 relative overflow-hidden shadow-lg gap-4">
             <div className="absolute -right-10 -bottom-10 size-32 md:size-48 bg-primary-500/20 blur-[24px] md:blur-[32px] rounded-full" />
