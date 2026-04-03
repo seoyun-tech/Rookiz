@@ -22,7 +22,7 @@ export default function App() {
       {/* 1. 배경 레이어: background가 있으면 해당 위치를, 없으면 현재 위치를 렌더링 */}
       <div className={background ? "fixed inset-0 overflow-hidden" : ""}>
         <Routes location={background || location}>
-          <Route path="/"              element={<Suspense><MainPage /></Suspense>} />
+          <Route path="/home"           element={<Suspense><MainPage /></Suspense>} />
           <Route path="/junior"        element={<Suspense><MainPageJunior /></Suspense>} />
           <Route path="/search"        element={<Suspense><SearchPage /></Suspense>} />
           <Route path="/mypage"        element={<Suspense><MyPage /></Suspense>} />
