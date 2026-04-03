@@ -1,0 +1,214 @@
+/* ============================================================
+   Rookiz Design Tokens — @theme block for Tailwind v4
+   Source of truth: /token/*.json (Figma Variables)
+   ============================================================ */
+
+@theme {
+
+  /* ── Colors ─────────────────────────────────────────────── */
+
+  --color-primary-50:  #FEFCF5;
+  --color-primary-100: #FDF7EC;
+  --color-primary-200: #FAEEDA;
+  --color-primary-300: #FFE499;
+  --color-primary-400: #FFD566;
+  --color-primary-500: #FFC633;
+  --color-primary-600: #C97F00;
+  --color-primary-700: #A86300;
+  --color-primary-800: #8C5000;
+  --color-primary-900: #6B3B00;
+  --color-primary-950: #3D2200;
+
+  --color-secondary-100: #FCF0EE;
+  --color-secondary-200: #FFCAC4;
+  --color-secondary-300: #F4BCB8;
+  --color-secondary-400: #FF9589;
+  --color-secondary-500: #E27F73;
+  --color-secondary-600: #D96456;
+  --color-secondary-700: #A84444;
+  --color-secondary-800: #8B3333;
+  --color-secondary-900: #6B2424;
+  --color-secondary-950: #4A1A1A;
+
+  --color-blue-50:  #F3FAFE;
+  --color-blue-100: #EBF6FC;
+  --color-blue-200: #D5EDF8;
+  --color-blue-300: #B8DCEF;
+  --color-blue-400: #96CAE5;
+  --color-blue-500: #75B7DA;
+  --color-blue-600: #2E85C6;
+  --color-blue-700: #1E6BA8;
+  --color-blue-800: #145185;
+  --color-blue-900: #0C3B62;
+  --color-blue-950: #07233D;
+
+  --color-gray-50:  #F6F6F6;
+  --color-gray-100: #ECECEC;
+  --color-gray-200: #D8D8D8;
+  --color-gray-300: #C0C0C0;
+  --color-gray-400: #A5A5A5;
+  --color-gray-500: #8B8B8B;
+  --color-gray-600: #737373;
+  --color-gray-700: #5A5A5A;
+  --color-gray-800: #424242;
+  --color-gray-900: #2E2E2E;
+  --color-gray-950: #1C1C1C;
+
+  --color-green-100: #F5FFF6;
+  --color-green-200: #D8FFDA;
+  --color-green-300: #BBFFBE;
+  --color-green-400: #9EFFA3;
+  --color-green-500: #8AEB8F;
+  --color-green-600: #72CE77;
+  --color-green-700: #5DB161;
+  --color-green-800: #49944C;
+  --color-green-900: #36763A;
+  --color-green-950: #265929;
+
+  /* ── Typography — Font Family ────────────────────────────── */
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+
+  /* ── Typography — Font Size + Line Height ────────────────── */
+  /* Source: Type.json size/* + leading/*                      */
+
+  --text-xs:   12px;
+  --text-xs--line-height:   20px;
+
+  --text-sm:   14px;
+  --text-sm--line-height:   20px;
+
+  --text-base: 16px;
+  --text-base--line-height: 28px;
+
+  --text-lg:   18px;
+  --text-lg--line-height:   28px;
+
+  --text-xl:   20px;
+  --text-xl--line-height:   28px;
+
+  --text-2xl:  24px;
+  --text-2xl--line-height:  36px;
+
+  --text-3xl:  30px;
+  --text-3xl--line-height:  36px;
+
+  --text-4xl:  36px;
+  --text-4xl--line-height:  48px;
+
+  --text-5xl:  48px;
+  --text-5xl--line-height:  48px;
+
+  --text-6xl:  60px;
+  --text-6xl--line-height:  60px;
+
+  --text-7xl:  72px;
+  --text-7xl--line-height:  60px;
+
+  /* ── Typography — Font Weight ────────────────────────────── */
+
+  --font-weight-normal:    400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+  --font-weight-extrabold: 800;
+  --font-weight-black:     900;
+
+  /* ── Typography — Line Height (standalone) ───────────────── */
+  /* Source: Type.json leading/*                               */
+
+  --leading-2:  20px;
+  --leading-4:  28px;
+  --leading-6:  36px;
+  --leading-8:  48px;
+  --leading-10: 60px;
+
+  /* ── Spacing ─────────────────────────────────────────────── */
+  /* Source: Spacing.json (0–10) + extended values             */
+
+  --spacing-0:   0px;
+  --spacing-0_5: 2px;
+  --spacing-1:   4px;
+  --spacing-1_5: 6px;
+  --spacing-2:   8px;
+  --spacing-2_5: 10px;
+  --spacing-3:   12px;
+  --spacing-3_5: 14px;
+  --spacing-4:   16px;
+  --spacing-5:   20px;
+  --spacing-6:   24px;
+  --spacing-7:   28px;
+  --spacing-8:   32px;
+  --spacing-9:   36px;
+  --spacing-10:  40px;
+  --spacing-12:  48px;
+  --spacing-16:  64px;
+  --spacing-20:  80px;
+  --spacing-24:  96px;
+  --spacing-32:  128px;
+
+  /* ── Border Radius ───────────────────────────────────────── */
+  /* Source: Radius.json                                       */
+
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-3xl:  24px;
+  --radius-4xl:  48px;
+  --radius-full: 999px;
+
+  /* ── Shadows ─────────────────────────────────────────────── */
+  /* Source: Shadow.json                                       */
+
+  --shadow-sm:   0px 1px 3px 0px rgba(0,0,0,0.10), 0px 1px 2px -1px rgba(0,0,0,0.10);
+  --shadow-md:   0px 10px 15px -3px rgba(0,0,0,0.10), 0px 4px 6px -4px rgba(0,0,0,0.10);
+  --shadow-lg:   0px 20px 25px -5px rgba(0,0,0,0.10), 0px 8px 10px -6px rgba(0,0,0,0.10);
+  --shadow-xl:   0px 20px 25px -5px rgba(0,0,0,0.10), 0px 8px 10px -6px rgba(0,0,0,0.10);
+  --shadow-card: 0px 2px 8px 0px rgba(0,0,0,0.04);
+
+  /* ── Status Colors (EyeGuard) ───────────────────────────── */
+
+  --color-status-inactive: #9CA3AF;
+  --color-status-ok:       #22C55E;
+  --color-status-caution:  #F59E0B;
+  --color-status-danger:   #EF4444;
+  --color-status-loading:  #6B7280;
+
+  /* ── Dark Theme Colors (EyeGuard full-page) ──────────────── */
+
+  --color-dark-50:     #F8FAFC;
+  --color-dark-300:    #94A3B8;
+  --color-dark-500:    #64748B;
+  --color-dark-600:    #475569;
+  --color-dark-900:    #0F172A;
+  --color-dark-action: #3B82F6;
+
+  /* ── Blur ────────────────────────────────────────────────── */
+  /* Source: Other.json blur/*                                 */
+
+  --blur-sm:  4px;
+  --blur:     8px;
+  --blur-md:  12px;
+  --blur-lg:  16px;
+  --blur-xl:  24px;
+
+}
+
+/* ── Overlay Gradient Utilities ──────────────────────────── */
+/* 이미지 위 텍스트 가독성용 그라디언트 오버레이 공통 패턴   */
+
+@utility overlay-card {
+  background: linear-gradient(to top, color-mix(in srgb, black 80%, transparent), color-mix(in srgb, black 20%, transparent), transparent);
+}
+
+@utility overlay-poster {
+  background: linear-gradient(to top, color-mix(in srgb, black 60%, transparent), transparent, transparent);
+}
+
+@utility overlay-banner {
+  background: linear-gradient(to top, color-mix(in srgb, black 80%, transparent), transparent, transparent);
+}
+
+@utility overlay-player {
+  background: linear-gradient(180deg, color-mix(in srgb, black 55%, transparent), transparent, color-mix(in srgb, black 80%, transparent));
+}

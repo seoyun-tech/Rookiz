@@ -1,0 +1,158 @@
+import axios from "axios";
+
+// ── Axios 인스턴스 ────────────────────────────────────────────
+
+const api = axios.create({
+  baseURL: "https://api.themoviedb.org/3/",
+  params: {
+    api_key: import.meta.env.VITE_TMDB_API_KEY,
+    language: "ko-KR",
+    region: "KR",
+  },
+});
+
+export const chatApi = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// ── 이미지 URL ────────────────────────────────────────────────
+
+export const getImageUrl = (path, size = "w500") =>
+  `https://image.tmdb.org/t/p/${size}${path}`;
+
+// ── 공통 헬퍼 ─────────────────────────────────────────────────
+
+const MIN_RESULTS = 8;
+
+/**
+ * API 호출 후 poster_path 필터 + 영어 폴백
+ * 한국어 결과가 MIN_RESULTS 미만이면 영어(en-US)로 재요청하여 보충
+ */
+async function fetchWithFallback(endpoint, params = {}) {
+  try {
+    const response = await api.get(endpoint, { params });
+    let results = response.data.results.filter((item) => item.poster_path);
+
+    if (results.length < MIN_RESULTS) {
+      const enResponse = await api.get(endpoint, {
+        params: { ...params, language: "en-US" },
+      });
+      const enResults = enResponse.data.results.filter((item) => item.poster_path);
+      const ids = new Set(results.map((r) => r.id));
+      results = [...results, ...enResults.filter((item) => !ids.has(item.id))];
+    }
+
+    return results;
+  } catch (error) {
+    console.error(`${endpoint} 로드 실패:`, error);
+    return [];
+  }
+}
+
+const KIDS_PARAMS = {
+  with_genres: "16,10751",
+  certification_country: "US",
+  "certification.lte": "G",
+};
+
+const JUNIOR_PARAMS = {
+  with_genres: "12,16,10751",
+  certification_country: "US",
+  "certification.lte": "PG",
+};
+
+function discoverMovies(baseParams, extra = {}) {
+  return fetchWithFallback("discover/movie", { ...baseParams, ...extra });
+}
+
+// ── 키즈 (4~7세) ──────────────────────────────────────────────
+
+export const fetchKidsMovies = () =>
+  discoverMovies(KIDS_PARAMS, { sort_by: "popularity.desc" });
+
+export const fetchLatestKidsMovies = () => {
+  const today = new Date().toISOString().split("T")[0];
+  return discoverMovies(KIDS_PARAMS, {
+    sort_by: "release_date.desc",
+    "primary_release_date.lte": today,
+  });
+};
+
+export const fetchKidsMoviesByPage = (page = 1) =>
+  discoverMovies(KIDS_PARAMS, { sort_by: "popularity.desc", page });
+
+// ── 주니어 (8~12세) ───────────────────────────────────────────
+
+export const fetchJuniorMovies = () =>
+  discoverMovies(JUNIOR_PARAMS, { sort_by: "popularity.desc" });
+
+export const fetchLatestJuniorMovies = () => {
+  const today = new Date().toISOString().split("T")[0];
+  return discoverMovies(JUNIOR_PARAMS, {
+    sort_by: "release_date.desc",
+    "primary_release_date.lte": today,
+  });
+};
+
+export const fetchJuniorDrama = () =>
+  discoverMovies(
+    { ...JUNIOR_PARAMS, with_genres: "18,10751" },
+    { sort_by: "vote_average.desc", "vote_count.gte": 100 },
+  );
+
+export const fetchJuniorMoviesByPage = (page = 1) =>
+  discoverMovies(JUNIOR_PARAMS, { sort_by: "popularity.desc", page });
+
+// ── 트렌딩 ────────────────────────────────────────────────────
+
+export const fetchTrending = () =>
+  fetchWithFallback("trending/movie/week");
+
+// ── 영어 글로벌 키즈 ──────────────────────────────────────────
+
+export async function fetchEnglishKidsContent() {
+  try {
+    const res = await api.get("discover/tv", {
+      params: {
+        with_genres: "16,10762",
+        original_language: "en",
+        sort_by: "popularity.desc",
+      },
+    });
+    return res.data.results.filter((item) => item.original_language === "en" && item.poster_path);
+  } catch (error) {
+    console.error("영어 키즈 로드 실패:", error);
+    return [];
+  }
+}
+
+// ── 개별 영화 API ─────────────────────────────────────────────
+
+export const fetchMovieDetail = async (movieId) => {
+  try {
+    const response = await api.get(`movie/${movieId}`);
+    return response.data;
+  } catch (error) {
+    console.error("영화 상세 로드 실패:", error);
+    return null;
+  }
+};
+
+export const fetchMovieVideos = async (movieId) => {
+  try {
+    const response = await api.get(`movie/${movieId}/videos`);
+    return response.data.results;
+  } catch (error) {
+    console.error("영화 비디오 로드 실패:", error);
+    return [];
+  }
+};
+
+export const fetchSimilarMovies = (movieId) =>
+  fetchWithFallback(`movie/${movieId}/similar`);
+
+export const searchMovies = (query) =>
+  fetchWithFallback("search/movie", { query, include_adult: false });
