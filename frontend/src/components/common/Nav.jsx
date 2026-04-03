@@ -1,9 +1,11 @@
+import { useState, useRef, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHouse, faHeart, faCircleUser, faMagnifyingGlass,
-  faBell, faLeaf, faChevronDown, faUser
+  faBell, faLeaf, faChevronDown, faChevronUp, faUser,
+  faTree, faArrowRightFromBracket
 } from '@fortawesome/free-solid-svg-icons';
 
 function NavButton({ icon, label, active = false, onClick }) {
@@ -32,23 +34,82 @@ function NavButton({ icon, label, active = false, onClick }) {
   );
 }
 
-function NavProfile({ name = "최승아", zone = "키즈존 4~7세" }) {
+const PROFILES = [
+  { name: "최승아", zone: "키즈존 4~7세", icon: faLeaf, zoneColor: "text-green-600" },
+  { name: "박서윤", zone: "주니어 8~12세", icon: faTree, zoneColor: "text-blue-500" },
+];
+
+function ProfileRow({ profile, onClick }) {
   return (
-    <button className="flex items-center h-[44px] w-fit md:w-[150px] bg-gray-50 rounded-full px-2.5 gap-2 hover:bg-gray-100 transition-colors cursor-pointer border-none outline-none">
-      <div className="size-6 bg-primary-200 rounded-full flex items-center justify-center shrink-0">
-        <FontAwesomeIcon icon={faUser} className="text-[14px] text-primary-700" />
+    <button
+      onClick={onClick}
+      className="flex items-center h-[44px] w-full px-2.5 gap-2 hover:bg-gray-100 transition-colors cursor-pointer rounded-full"
+    >
+      <div className="size-[30px] flex items-center justify-center shrink-0">
+        <FontAwesomeIcon icon={faUser} className="text-[20px] text-gray-700" />
       </div>
-      <div className="hidden md:flex flex-col items-start leading-tight overflow-hidden text-left">
+      <div className="flex flex-col items-start leading-tight">
         <div className="flex items-center gap-1">
-          <span className="text-sm font-bold text-gray-700 whitespace-nowrap">{name}</span>
-          <FontAwesomeIcon icon={faLeaf} className="text-[14px] text-green-500" />
+          <span className="text-sm font-bold text-gray-700 whitespace-nowrap">{profile.name}</span>
+          <FontAwesomeIcon icon={profile.icon} className="text-[12px] text-green-500" />
         </div>
-        <span className="text-[12px] font-bold text-green-600 whitespace-nowrap">{zone}</span>
-      </div>
-      <div className="ml-auto hidden md:block">
-        <FontAwesomeIcon icon={faChevronDown} className="text-[14px] text-gray-400" />
+        <span className={twMerge("text-xs font-bold whitespace-nowrap", profile.zoneColor)}>{profile.zone}</span>
       </div>
     </button>
+  );
+}
+
+function NavProfile({ name = "최승아", zone = "키즈존 4~7세" }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function onOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    if (open) document.addEventListener('mousedown', onOutside);
+    return () => document.removeEventListener('mousedown', onOutside);
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      {/* 프로필 버튼 */}
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="flex items-center h-[44px] w-fit md:w-[150px] bg-gray-50 rounded-full px-2.5 gap-2 hover:bg-gray-100 transition-colors cursor-pointer border-none outline-none"
+      >
+        <div className="size-6 bg-primary-200 rounded-full flex items-center justify-center shrink-0">
+          <FontAwesomeIcon icon={faUser} className="text-[14px] text-primary-700" />
+        </div>
+        <div className="hidden md:flex flex-col items-start leading-tight overflow-hidden text-left">
+          <div className="flex items-center gap-1">
+            <span className="text-sm font-bold text-gray-700 whitespace-nowrap">{name}</span>
+            <FontAwesomeIcon icon={faLeaf} className="text-[14px] text-green-500" />
+          </div>
+          <span className="text-[12px] font-bold text-green-600 whitespace-nowrap">{zone}</span>
+        </div>
+        <div className="ml-auto hidden md:block">
+          <FontAwesomeIcon
+            icon={open ? faChevronUp : faChevronDown}
+            className="text-[14px] text-gray-400 transition-transform duration-200"
+          />
+        </div>
+      </button>
+
+      {/* 드롭다운 패널 */}
+      {open && (
+        <div className="absolute right-0 top-[calc(100%+8px)] w-[150px] bg-gray-50 rounded-3xl shadow-lg flex flex-col items-center px-1 py-1 z-50">
+          {PROFILES.map((p) => (
+            <ProfileRow key={p.name} profile={p} onClick={() => setOpen(false)} />
+          ))}
+          <div className="w-[80%] h-px bg-gray-200 my-1" />
+          <button className="flex items-center justify-center h-[44px] w-full px-2.5 gap-2 hover:bg-gray-100 transition-colors cursor-pointer rounded-full">
+            <span className="text-sm font-bold text-gray-700">로그아웃</span>
+            <FontAwesomeIcon icon={faArrowRightFromBracket} className="text-[16px] text-gray-700" />
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -62,7 +123,7 @@ export function Nav({ activeTab = "main" }) {
         {/* Left: Logo */}
         <div
           className="flex items-center select-none cursor-pointer"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/home')}
         >
           <img src="/LOGO.svg" alt="ROOKIZ" className="h-8 md:h-16 w-auto" />
         </div>
@@ -73,7 +134,7 @@ export function Nav({ activeTab = "main" }) {
             icon={faHouse}
             label="메인"
             active={activeTab === "main"}
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/home')}
           />
           <NavButton
             icon={faHeart}

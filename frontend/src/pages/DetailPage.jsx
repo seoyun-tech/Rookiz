@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
@@ -119,6 +119,7 @@ function EpisodeCard({ episode, active, onClick }) {
 export default function DetailPage({ isModal = false }) {
   const { movieId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState([]);
   const [similar, setSimilar] = useState([]);

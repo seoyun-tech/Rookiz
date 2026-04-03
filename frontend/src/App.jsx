@@ -7,6 +7,7 @@ const MainPage = lazy(() => import("./pages/MainPage"));
 const MainPageJunior = lazy(() => import("./pages/MainPageJunior"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const MyPage = lazy(() => import("./pages/MyPage"));
+const AironPage = lazy(() => import("./pages/AironPage"));
 
 /**
  * App — 전역 레이아웃 및 모달 라우팅 관리
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/junior"        element={<Suspense><MainPageJunior /></Suspense>} />
           <Route path="/search"        element={<Suspense><SearchPage /></Suspense>} />
           <Route path="/mypage"        element={<Suspense><MyPage /></Suspense>} />
+          <Route path="/airon"         element={<Suspense><AironPage /></Suspense>} />
           {/* 직접 접근 시에도 상세페이지가 보여야 함 */}
           {!background && (
             <Route path="/movie/:movieId" element={<Suspense><DetailPage /></Suspense>} />

@@ -6,6 +6,7 @@ import {
   faUser, faAward, faLeaf, faBan, faCheck, faCalendarDays, faPencil,
   faArrowTrendUp, faClock, faUserShield, faCircleCheck, faCircleMinus,
   faCirclePlus, faUserCheck, faCircleExclamation, faShieldHeart,
+  faFloppyDisk, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
 /* ── 마이루 통계 ── */
@@ -49,14 +50,42 @@ export default function MyPage() {
   const [limit, setLimit] = useState(60);
   const [missions, setMissions] = useState(INIT_MISSIONS);
 
-  function toggleSticker(idx) {
-    setStickers(prev => prev.map((v, i) => (i === idx ? !v : v)));
+  /* 케어루 편집 모드 */
+  const [isEditing, setIsEditing] = useState(false);
+  const [editMissions, setEditMissions] = useState(INIT_MISSIONS);
+  const [editBlocked, setEditBlocked] = useState(['폭력', '애니']);
+  const [editLimit, setEditLimit] = useState(60);
+
+  function startEdit() {
+    setEditMissions(missions.map(m => ({ ...m })));
+    setEditBlocked([...blocked]);
+    setEditLimit(limit);
+    setIsEditing(true);
   }
 
-  function toggleGenre(g) {
-    setBlocked(prev =>
+  function cancelEdit() {
+    setIsEditing(false);
+  }
+
+  function saveEdit() {
+    setMissions(editMissions);
+    setBlocked(editBlocked);
+    setLimit(editLimit);
+    setIsEditing(false);
+  }
+
+  function editMissionText(id, text) {
+    setEditMissions(prev => prev.map(m => m.id === id ? { ...m, text } : m));
+  }
+
+  function toggleEditGenre(g) {
+    setEditBlocked(prev =>
       prev.includes(g) ? prev.filter(x => x !== g) : [...prev, g]
     );
+  }
+
+  function toggleSticker(idx) {
+    setStickers(prev => prev.map((v, i) => (i === idx ? !v : v)));
   }
 
   function toggleMission(id) {
@@ -216,23 +245,39 @@ export default function MyPage() {
               {/* 루와의 미션 */}
               <div className="bg-white rounded-3xl px-8 py-10 shadow-sm flex flex-col gap-8">
                 <span className="text-xl font-bold text-gray-700">루와의 미션</span>
-                <ul className="flex flex-col gap-4">
-                  {missions.map(m => (
-                    <li
-                      key={m.id}
-                      className="flex items-center gap-[11px] cursor-pointer"
-                      onClick={() => toggleMission(m.id)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faCircleCheck}
-                        className={`text-[20px] shrink-0 ${m.done ? 'text-gray-500' : 'text-secondary-500'}`}
-                      />
-                      <span className={`text-xl leading-7 ${m.done ? 'text-gray-500' : 'line-through text-gray-800'}`}>
-                        {m.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                {isEditing ? (
+                  <ul className="flex flex-col gap-3">
+                    {editMissions.map((m, i) => (
+                      <li key={m.id} className="flex items-center gap-3">
+                        <span className="text-sm font-bold text-primary-500 w-5 text-center shrink-0">{i + 1}</span>
+                        <input
+                          className="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-base text-gray-700 outline-none focus:border-primary-500 transition-colors"
+                          value={m.text}
+                          placeholder="미션 내용을 입력하세요"
+                          onChange={e => editMissionText(m.id, e.target.value)}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ul className="flex flex-col gap-4">
+                    {missions.map(m => (
+                      <li
+                        key={m.id}
+                        className="flex items-center gap-[11px] cursor-pointer"
+                        onClick={() => toggleMission(m.id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCircleCheck}
+                          className={`text-[20px] shrink-0 ${m.done ? 'text-gray-500' : 'text-secondary-500'}`}
+                        />
+                        <span className={`text-xl leading-7 ${m.done ? 'text-gray-500' : 'line-through text-gray-800'}`}>
+                          {m.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               {/* 장르 차단 */}
@@ -243,16 +288,17 @@ export default function MyPage() {
                 </div>
                 <div className="flex flex-wrap gap-[12px]">
                   {ALL_GENRES.map(g => {
-                    const isBlocked = blocked.includes(g);
+                    const isBlocked = isEditing ? editBlocked.includes(g) : blocked.includes(g);
                     return (
                       <button
                         key={g}
-                        onClick={() => toggleGenre(g)}
+                        onClick={() => isEditing && toggleEditGenre(g)}
+                        disabled={!isEditing}
                         className={`flex items-center gap-1 px-4 py-[10px] rounded-full text-sm font-bold border transition-all duration-200
                           ${isBlocked
                             ? 'bg-secondary-100 border-secondary-500 text-secondary-500'
                             : 'bg-gray-50 border-gray-100 text-gray-500'
-                          }`}
+                          } ${!isEditing ? 'cursor-default' : 'cursor-pointer'}`}
                       >
                         <FontAwesomeIcon
                           icon={isBlocked ? faBan : faCheck}
@@ -275,14 +321,24 @@ export default function MyPage() {
                 <span className="text-sm text-gray-400">하루 최대 시청 시간을 설정해요</span>
               </div>
               <div className="flex items-center gap-[2px]">
-                <button onClick={() => setLimit(v => Math.max(15, v - 15))}>
+                <button
+                  onClick={() => isEditing && setEditLimit(v => Math.max(15, v - 15))}
+                  disabled={!isEditing}
+                  className={isEditing ? 'cursor-pointer' : 'cursor-default opacity-40'}
+                >
                   <FontAwesomeIcon icon={faCircleMinus} className="text-xl text-gray-300" />
                 </button>
                 <div className="w-[64px] text-center">
-                  <span className="text-2xl font-extrabold text-primary-500">{limit}</span>
+                  <span className="text-2xl font-extrabold text-primary-500">
+                    {isEditing ? editLimit : limit}
+                  </span>
                   <span className="text-xs font-semibold text-gray-300">분</span>
                 </div>
-                <button onClick={() => setLimit(v => Math.min(180, v + 15))}>
+                <button
+                  onClick={() => isEditing && setEditLimit(v => Math.min(180, v + 15))}
+                  disabled={!isEditing}
+                  className={isEditing ? 'cursor-pointer' : 'cursor-default opacity-40'}
+                >
                   <FontAwesomeIcon icon={faCirclePlus} className="text-xl text-primary-500" />
                 </button>
               </div>
@@ -293,7 +349,7 @@ export default function MyPage() {
               <div className="relative h-[7px] bg-gray-100 rounded-full overflow-hidden">
                 <div
                   className="absolute left-0 top-0 h-full rounded-full bg-linear-[90deg] from-primary-200 to-primary-500 transition-all duration-300"
-                  style={{ width: `${limitPct}%` }}
+                  style={{ width: `${((( isEditing ? editLimit : limit) - 15) / (180 - 15)) * 100}%` }}
                 />
               </div>
               <div className="flex justify-between">
@@ -303,12 +359,34 @@ export default function MyPage() {
             </div>
           </div>
 
-          {/* 케어루 수정하기 버튼 */}
-          <div className="flex justify-end">
-            <button className="flex items-center justify-center gap-1 bg-white border border-primary-500 rounded-[48px] h-[44px] w-[153px] text-sm font-bold text-primary-800 hover:bg-primary-500 hover:text-white transition-colors duration-200">
-              <FontAwesomeIcon icon={faPencil} className="text-[16px]" />
-              케어루 수정하기
-            </button>
+          {/* 버튼 영역 */}
+          <div className="flex justify-end gap-2">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={cancelEdit}
+                  className="flex items-center justify-center gap-1 bg-white border border-gray-300 rounded-[48px] h-[44px] px-5 text-sm font-bold text-gray-500 hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+                >
+                  <FontAwesomeIcon icon={faXmark} className="text-[16px]" />
+                  취소
+                </button>
+                <button
+                  onClick={saveEdit}
+                  className="flex items-center justify-center gap-1 bg-primary-500 border border-primary-500 rounded-[48px] h-[44px] px-5 text-sm font-bold text-white hover:bg-primary-600 transition-colors duration-200 cursor-pointer"
+                >
+                  <FontAwesomeIcon icon={faFloppyDisk} className="text-[16px]" />
+                  저장하기
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={startEdit}
+                className="flex items-center justify-center gap-1 bg-white border border-primary-500 rounded-[48px] h-[44px] w-[153px] text-sm font-bold text-primary-800 hover:bg-primary-500 hover:text-white transition-colors duration-200 cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faPencil} className="text-[16px]" />
+                케어루 수정하기
+              </button>
+            )}
           </div>
         </section>
 
