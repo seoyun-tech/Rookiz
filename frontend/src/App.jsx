@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import { EyeGuardWidget } from "./components/common/EyeGuardWidget";
 
 /**
  * App — API / 컴포넌트 브릿지
@@ -6,5 +7,10 @@ import { Outlet } from "react-router";
  * 각 페이지는 <Outlet />으로 렌더링된다.
  */
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      <EyeGuardWidget />
+    </>
+  );
 }
