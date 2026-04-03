@@ -1,27 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import App from "./App.jsx";
-import MainPage from "./pages/MainPage";
-import MainPageJunior from "./pages/MainPageJunior";
-import SearchPage from "./pages/SearchPage";
-import MyPage from "./pages/MyPage";
-import DetailPage from "./pages/DetailPage";
-import OnboardingPage from "./pages/OnboardingPage";
 import "./styles/index.css";
 
+// App.jsx 내부에서 자체적으로 Routes를 관리하므로
+// 최상위 라우터는 모든 경로를 App으로 보낸다.
 const router = createBrowserRouter([
   {
+    path: "/*",
     element: <App />,
-    children: [
-      { path: "/",              element: <OnboardingPage /> },
-      { path: "/home",          element: <MainPage /> },
-      { path: "/junior",        element: <MainPageJunior /> },
-      { path: "/search",        element: <SearchPage /> },
-      { path: "/mypage",        element: <MyPage /> },
-      { path: "/movie/:movieId",element: <DetailPage /> },
-      { path: "*",              element: <Navigate to="/" replace /> },
-    ],
   },
 ]);
 

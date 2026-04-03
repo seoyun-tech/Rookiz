@@ -2,8 +2,8 @@ import { twMerge } from 'tailwind-merge';
 import { useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faHouse, faRobot, faUser, faMagnifyingGlass,
-  faBell, faLeaf, faChevronDown
+  faHouse, faHeart, faCircleUser, faMagnifyingGlass,
+  faBell, faLeaf, faChevronDown, faUser
 } from '@fortawesome/free-solid-svg-icons';
 
 function NavButton({ icon, label, active = false, onClick }) {
@@ -76,13 +76,13 @@ export function Nav({ activeTab = "main" }) {
             onClick={() => navigate('/')}
           />
           <NavButton
-            icon={faRobot}
+            icon={faHeart}
             label="내 친구 루"
             active={activeTab === "airon"}
             onClick={() => navigate('/airon')}
           />
           <NavButton
-            icon={faUser}
+            icon={faCircleUser}
             label="마이 페이지"
             active={activeTab === "mypage"}
             onClick={() => navigate('/mypage')}
