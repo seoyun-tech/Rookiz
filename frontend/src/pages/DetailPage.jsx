@@ -189,15 +189,6 @@ export default function DetailPage({ isModal = false }) {
       isModal ? "w-full max-w-[1000px] my-10 rounded-[48px] shadow-2xl" : "min-h-screen"
     )} onClick={(e) => e.stopPropagation()}>
       
-      {isModal && (
-        <button 
-          onClick={onClose}
-          className="absolute top-6 right-6 z-50 size-12 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
-        >
-          <FontAwesomeIcon icon={faXmark} className="text-2xl" />
-        </button>
-      )}
-
       {/* ── 1. Video Player ── */}
       <VideoPlayer
         youtubeKey={trailer?.key}
@@ -205,6 +196,7 @@ export default function DetailPage({ isModal = false }) {
         title={movie.title}
         subtitle={`시즌 2 · ${currentEpId}화 - 우주의 신비`}
         onBack={isModal ? onClose : () => navigate(-1)}
+        onClose={onClose}
         className={isModal ? "h-[560px]" : "max-h-[560px]"}
       />
 
@@ -310,7 +302,13 @@ export default function DetailPage({ isModal = false }) {
         {/* ── 4. 추천 콘텐츠 (복구) ── */}
         {similar.length > 0 && (
           <div className="mt-16 pb-10">
-            <h2 className="text-xl font-extrabold text-[#1a1a2e] mb-6 text-left">이런 콘텐츠도 있어요</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-extrabold text-[#1a1a2e] text-left">이런 콘텐츠도 있어요</h2>
+              <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors">
+                <span className="text-lg font-bold">더보기</span>
+                <FontAwesomeIcon icon={faChevronRight} className="text-sm" />
+              </button>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {similar.slice(0, 4).map((m) => (
                 <div 

@@ -1,10 +1,10 @@
 import {
   require_react
-} from "./chunk-VX2H6PUQ.js";
+} from "./chunk-I5SMQCBP.js";
 import {
   __commonJS,
   __toESM
-} from "./chunk-G3PMV62Z.js";
+} from "./chunk-B4Q33VKO.js";
 
 // node_modules/react/cjs/react-jsx-runtime.development.js
 var require_react_jsx_runtime_development = __commonJS({
@@ -220,7 +220,7 @@ var require_react_jsx_runtime_development = __commonJS({
       function isValidElement(object) {
         return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
       }
-      var React2 = require_react(), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+      var React2 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
         return null;
       };
       React2 = {
@@ -3856,7 +3856,8 @@ var Logger = class {
     console.error(`[${this.scope}]`, ...args);
   }
 };
-typeof process !== "undefined" && process.env?.FA_VERSION || "7.0.0";
+var _a;
+typeof process !== "undefined" && ((_a = process.env) == null ? void 0 : _a.FA_VERSION) || "7.0.0";
 var SVG_CORE_VERSION = (
   // @ts-expect-error TS2872 - Expression is always truthy - This is true when v7 of SVGCore is used, but not when v6 is used.
   // This is the point of this check - if the property exists on config, we have v7, otherwise we have v6.
@@ -4102,7 +4103,7 @@ var LayersText2 = ({
   const textAbstractElement = (0, import_react.useMemo)(() => {
     const textObject = text(text$1, {
       classes: [
-        ...className?.split(" ") || [],
+        ...(className == null ? void 0 : className.split(" ")) || [],
         ...inverse ? [STYLE_CLASSES.inverse] : []
       ],
       transform: typeof transform === "string" ? parse$1.transform(transform) : transform
@@ -4119,7 +4120,7 @@ var LayersCounter2 = ({
 }) => {
   const counterAbstractElement = (0, import_react.useMemo)(
     () => counter(count, {
-      classes: className?.split(" ")
+      classes: className == null ? void 0 : className.split(" ")
     }).abstract[0],
     [count, className]
   );
@@ -4131,4 +4132,24 @@ export {
   LayersCounter2 as LayersCounter,
   LayersText2 as LayersText
 };
+/*! Bundled license information:
+
+react/cjs/react-jsx-runtime.development.js:
+  (**
+   * @license React
+   * react-jsx-runtime.development.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+@fortawesome/fontawesome-svg-core/index.mjs:
+  (*!
+   * Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com
+   * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+   * Copyright 2026 Fonticons, Inc.
+   *)
+*/
 //# sourceMappingURL=@fortawesome_react-fontawesome.js.map

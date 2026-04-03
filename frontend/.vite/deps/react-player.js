@@ -1,10 +1,10 @@
 "use client";
 import {
   require_react
-} from "./chunk-VX2H6PUQ.js";
+} from "./chunk-I5SMQCBP.js";
 import {
   __toESM
-} from "./chunk-G3PMV62Z.js";
+} from "./chunk-B4Q33VKO.js";
 
 // node_modules/react-player/dist/players.js
 var import_react2 = __toESM(require_react(), 1);
@@ -66,7 +66,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerHls' */
-        "./react-ETR3VC4H.js"
+        "./react-KQJKY645.js"
       )
     )
   },
@@ -78,7 +78,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerDash' */
-        "./react-C53KO7H6.js"
+        "./react-G7FFLEIL.js"
       )
     )
   },
@@ -90,7 +90,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerMux' */
-        "./dist-KG5XARWD.js"
+        "./dist-NC6DDXFN.js"
       )
     )
   },
@@ -101,7 +101,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerYouTube' */
-        "./react-6DQMCM7Z.js"
+        "./react-E4AC7IJI.js"
       )
     )
   },
@@ -112,7 +112,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerVimeo' */
-        "./react-225U6IK3.js"
+        "./react-JPSSWJNC.js"
       )
     )
   },
@@ -124,7 +124,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerWistia' */
-        "./react-HZJDIYE5.js"
+        "./react-H4LB46A3.js"
       )
     )
   },
@@ -136,7 +136,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerSpotify' */
-        "./react-H5PWGRPT.js"
+        "./react-K5ZJXLI6.js"
       )
     )
   },
@@ -148,7 +148,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerTwitch' */
-        "./react-TLBLJAKK.js"
+        "./react-EIERI5RP.js"
       )
     )
   },
@@ -160,7 +160,7 @@ var Players = [
     player: (0, import_react2.lazy)(
       () => import(
         /* webpackChunkName: 'reactPlayerTiktok' */
-        "./react-BTG5RUCV.js"
+        "./react-X5O7DJE3.js"
       )
     )
   },
@@ -306,7 +306,7 @@ var Player_default = Player;
 // node_modules/react-player/dist/ReactPlayer.js
 var Preview = (0, import_react4.lazy)(() => import(
   /* webpackChunkName: 'reactPlayerPreview' */
-  "./Preview-MJGNLKLI.js"
+  "./Preview-5YNIAVUE.js"
 ));
 var customPlayers = [];
 var createReactPlayer = (players, playerFallback) => {
