@@ -19,8 +19,6 @@ import { Card } from "../components/Card";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { Tag } from "../components/Card";
 
-// ── 서브 컴포넌트 ──────────────────────────────────────────────
-
 function Chip({ variant, label }) {
   const styles = {
     kids: "bg-green-200 text-green-600",
@@ -130,8 +128,6 @@ function TabBtn({ label, active, onClick }) {
   );
 }
 
-// ── DetailPage ─────────────────────────────────────────────────
-
 export default function DetailPage() {
   const { movieId } = useParams();
   const navigate = useNavigate();
@@ -142,7 +138,6 @@ export default function DetailPage() {
 
   const [activeTab, setActiveTab] = useState("episodes");
   const [selectedSeason, setSelectedSeason] = useState(DEFAULT_SEASON);
-  const [currentEpId, setCurrentEpId] = useState(DEFAULT_EP_ID);
 
   useEffect(() => {
     const load = async () => {
@@ -192,7 +187,7 @@ export default function DetailPage() {
             youtubeKey={trailer?.key}
             poster={poster}
             title={movie.title}
-            subtitle={`시즌 2 · ${currentEpId}화 - 우주의 신비`}
+            subtitle={`시즌 2 · ${DEFAULT_EP_ID}화 - 우주의 신비`}
             onBack={() => navigate(-1)}
             className="max-h-[560px]"
           />

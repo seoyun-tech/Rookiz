@@ -108,7 +108,7 @@ export default function MyPage() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">마이루</h2>
           <div className="bg-white border border-primary-500 rounded-3xl px-5 py-7 md:px-8 md:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 shadow-sm">
             <div className="flex gap-5 items-center">
-              <div className="size-[100px] md:size-[123px] bg-white rounded-[27px] shadow-sm flex items-center justify-center shrink-0">
+              <div className="size-25 md:size-[123px] bg-white rounded-[27px] shadow-sm flex items-center justify-center shrink-0">
                 <FontAwesomeIcon icon={faUser} className="text-primary-500 text-4xl md:text-5xl" />
               </div>
               <div className="flex flex-col gap-3">
@@ -175,7 +175,7 @@ export default function MyPage() {
                 <span className="text-xl font-bold text-gray-700">이번 주 시청 시간 (분)</span>
 
                 {/* 바 차트 */}
-                <div className="flex items-end gap-2 h-[160px]">
+                <div className="flex items-end gap-2 h-40">
                   {watchData.map((d, i) => (
                     <div key={i} className="flex-1 flex flex-col items-center gap-1">
                       <div

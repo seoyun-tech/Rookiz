@@ -156,6 +156,8 @@
   --spacing-15:   60px;
   --spacing-30:   120px;
   --spacing-32:   128px;
+  --spacing-40:   160px;
+  --spacing-43:   172px;
   --spacing-12_5: 50px;
   --spacing-25:   100px;
 
@@ -214,6 +216,7 @@
   --width-onboard-md: 512px;
   --width-onboard-sm: 384px;
   --width-age-card:   248px;
+  --width-eye-guard:  280px;
   --width-sticker:    200px;
 
 }

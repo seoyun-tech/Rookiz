@@ -8,7 +8,7 @@ const SOCIAL_ICONS = [faGlobe, faHeadset];
 export function Footer({ className }) {
   return (
     <footer className={twMerge("w-full bg-gray-50", className)}>
-      <div className="max-w-container mx-auto px-6 md:px-10 py-6 md:py-0 md:h-[172px] flex flex-col md:flex-row md:items-center gap-6 md:gap-0 md:justify-between">
+      <div className="max-w-container mx-auto px-6 md:px-10 py-6 md:py-0 md:h-43 flex flex-col md:flex-row md:items-center gap-6 md:gap-0 md:justify-between">
         {/* 로고 & 저작권 */}
         <div className="flex flex-col gap-2 shrink-0">
           <div className="py-0 md:py-7">
