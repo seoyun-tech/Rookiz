@@ -1,26 +1,15 @@
-import { StrictMode, lazy, Suspense } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import App from "./App.jsx";
 import "./styles/index.css";
 
-const MainPage = lazy(() => import("./pages/MainPage"));
-const MainPageJunior = lazy(() => import("./pages/MainPageJunior"));
-const SearchPage = lazy(() => import("./pages/SearchPage"));
-const MyPage = lazy(() => import("./pages/MyPage"));
-const DetailPage = lazy(() => import("./pages/DetailPage"));
-
+// App.jsx 내부에서 자체적으로 Routes를 관리하므로
+// 최상위 라우터는 모든 경로를 App으로 보낸다.
 const router = createBrowserRouter([
   {
+    path: "/*",
     element: <App />,
-    children: [
-      { path: "/",              element: <Suspense><MainPage /></Suspense> },
-      { path: "/junior",        element: <Suspense><MainPageJunior /></Suspense> },
-      { path: "/search",        element: <Suspense><SearchPage /></Suspense> },
-      { path: "/mypage",        element: <Suspense><MyPage /></Suspense> },
-      { path: "/movie/:movieId",element: <Suspense><DetailPage /></Suspense> },
-      { path: "*",              element: <Navigate to="/" replace /> },
-    ],
   },
 ]);
 
