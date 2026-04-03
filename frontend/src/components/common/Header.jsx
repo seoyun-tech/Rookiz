@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Header — 섹션 타이틀 + 더보기 링크
@@ -16,7 +16,7 @@ export function Header({ title, showViewAll = true, viewAllLink = '#' }) {
           className="flex items-center gap-1 text-sm md:text-lg font-bold text-gray-800 hover:opacity-70 transition-opacity font-poppins shrink-0"
         >
           <span>더보기</span>
-          <FontAwesomeIcon icon={faChevronRight} className="text-[8px] md:text-[10px]" />
+          <FontAwesomeIcon icon={faCaretRight} className="text-[8px] md:text-[10px]" />
         </a>
       )}
     </div>

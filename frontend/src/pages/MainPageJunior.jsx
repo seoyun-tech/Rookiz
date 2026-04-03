@@ -7,7 +7,7 @@ import { ContentRow } from "../components/common/ContentRow";
 import { Card } from "../components/common/Card";
 import { CharacterRow } from "../components/common/CharacterRow";
 import { CharacterCard } from "../components/common/CharacterCard";
-import { AiRoo } from "../components/common/AiRoo";
+import { AiRooSticky } from "../components/common/AiRooSticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faPlay, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -231,7 +231,7 @@ export default function MainPageJunior() {
         </div>
       </main>
 
-      <AiRoo />
+      <AiRooSticky />
       <Footer />
     </div>
   );
