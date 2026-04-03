@@ -1,11 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
-import axios from 'axios';
-import { Nav } from '../components/common/Nav';
-import { Footer } from '../components/common/Footer';
-import { Searchbar } from '../components/common/Searchbar';
-import { ContentRow } from '../components/common/ContentRow';
-import { Card } from '../components/common/Card';
+import { searchMovies, fetchSimilarMovies, getImageUrl } from '../api/api';
+import { Nav } from '../components/Nav';
+import { Footer } from '../components/Footer';
+import { Searchbar } from '../components/Searchbar';
+import { ContentRow } from '../components/ContentRow';
+import { Card } from '../components/Card';
+
+const FORBIDDEN_GENRES = [18, 10749, 27, 80, 53, 9648];
+
+function filterByAge(movies, mode) {
+  return movies.filter((movie) => {
+    const hasForbidden = movie.genre_ids.some((id) => FORBIDDEN_GENRES.includes(id));
+    if (hasForbidden) return false;
+    if (mode === "kids") {
+      return movie.genre_ids.includes(16) && movie.genre_ids.includes(10751);
+    }
+    return true;
+  });
+}
 
 export default function SearchPage() {
   const [results, setResults] = useState([]);
@@ -14,9 +27,8 @@ export default function SearchPage() {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const location = useLocation();
-  const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-  const isJuniorPath = window.location.pathname.includes('junior');
+  const isJuniorPath = location.pathname.includes('junior');
   const currentMode = isJuniorPath ? 'junior' : 'kids';
 
   useEffect(() => {
@@ -32,31 +44,8 @@ export default function SearchPage() {
     setSelectedMovie(null);
 
     try {
-      const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
-        params: { 
-          api_key: API_KEY, 
-          query: searchTerm, 
-          language: 'ko-KR', 
-          include_adult: false,
-          region: 'KR'
-        }
-      });
-
-      const forbiddenGenres = [18, 10749, 27, 80, 53, 9648];
-      
-      const filtered = response.data.results.filter(movie => {
-        const hasForbidden = movie.genre_ids.some(id => forbiddenGenres.includes(id));
-        const isAnimation = movie.genre_ids.includes(16);
-        const isFamily = movie.genre_ids.includes(10751);
-
-        if (currentMode === 'kids') {
-          return !hasForbidden && isAnimation && isFamily;
-        } else {
-          return !hasForbidden;
-        }
-      });
-
-      setResults(filtered);
+      const movies = await searchMovies(searchTerm);
+      setResults(filterByAge(movies, currentMode));
     } catch (error) {
       console.error(error);
     } finally {
@@ -69,24 +58,8 @@ export default function SearchPage() {
     setIsLoading(true);
     
     try {
-      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/similar`, {
-        params: { api_key: API_KEY, language: 'ko-KR' }
-      });
-
-      const forbiddenGenres = [18, 10749, 27, 80, 53, 9648];
-      const filteredRelated = response.data.results.filter(m => {
-        const hasForbidden = m.genre_ids.some(id => forbiddenGenres.includes(id));
-        const isAnimation = m.genre_ids.includes(16);
-        const isFamily = m.genre_ids.includes(10751);
-
-        if (currentMode === 'kids') {
-          return !hasForbidden && isAnimation && isFamily;
-        } else {
-          return !hasForbidden;
-        }
-      });
-
-      setResults(filteredRelated);
+      const similarMovies = await fetchSimilarMovies(movie.id);
+      setResults(filterByAge(similarMovies, currentMode));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error(error);
@@ -102,7 +75,7 @@ export default function SearchPage() {
       <main className="flex-1 w-full max-w-[1280px] mx-auto px-6 py-10 md:py-20 flex flex-col gap-10 md:gap-16">
         <div className="flex flex-col gap-6 items-center text-center">
           <h1 className="text-3xl md:text-5xl font-black text-gray-800">
-            {currentMode === 'junior' ? '무엇을 찾고 있나요?' : '무엇을 찾고 있나요?'}
+            무엇을 찾고 있나요?
           </h1>
           <Searchbar className="w-full max-w-[1000px]" onSearch={handleSearch} />
         </div>
@@ -110,7 +83,7 @@ export default function SearchPage() {
         {selectedMovie && (
           <div className="bg-gray-50 rounded-[48px] p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center border border-gray-100">
             <img 
-              src={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : 'https://via.placeholder.com/500'} 
+              src={getImageUrl(selectedMovie.poster_path)} 
               className="w-48 md:w-64 rounded-[32px] shadow-xl"
               alt={selectedMovie.title}
             />
@@ -150,7 +123,7 @@ export default function SearchPage() {
                   <Card 
                     key={movie.id}
                     title={movie.title}
-                    image={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500'}
+                    image={getImageUrl(movie.poster_path)}
                     onClick={() => handleCardClick(movie)}
                     className="cursor-pointer aspect-[3/4] rounded-[48px]"
                   />

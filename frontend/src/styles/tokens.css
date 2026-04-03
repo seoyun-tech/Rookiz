@@ -7,6 +7,7 @@
 
   /* ── Colors ─────────────────────────────────────────────── */
 
+  --color-primary-50:  #FEFCF5;
   --color-primary-100: #FDF7EC;
   --color-primary-200: #FAEEDA;
   --color-primary-300: #FFE499;
@@ -29,6 +30,7 @@
   --color-secondary-900: #6B2424;
   --color-secondary-950: #4A1A1A;
 
+  --color-blue-50:  #F3FAFE;
   --color-blue-100: #EBF6FC;
   --color-blue-200: #D5EDF8;
   --color-blue-300: #B8DCEF;
@@ -158,10 +160,28 @@
   /* ── Shadows ─────────────────────────────────────────────── */
   /* Source: Shadow.json                                       */
 
-  --shadow-sm:  0px 1px 3px 0px rgba(0,0,0,0.10), 0px 1px 2px -1px rgba(0,0,0,0.10);
-  --shadow-md:  0px 10px 15px -3px rgba(0,0,0,0.10), 0px 4px 6px -4px rgba(0,0,0,0.10);
-  --shadow-lg:  0px 20px 25px -5px rgba(0,0,0,0.10), 0px 8px 10px -6px rgba(0,0,0,0.10);
-  --shadow-xl:  0px 20px 25px -5px rgba(0,0,0,0.10), 0px 8px 10px -6px rgba(0,0,0,0.10);
+  --shadow-sm:   0px 1px 3px 0px rgba(0,0,0,0.10), 0px 1px 2px -1px rgba(0,0,0,0.10);
+  --shadow-md:   0px 10px 15px -3px rgba(0,0,0,0.10), 0px 4px 6px -4px rgba(0,0,0,0.10);
+  --shadow-lg:   0px 20px 25px -5px rgba(0,0,0,0.10), 0px 8px 10px -6px rgba(0,0,0,0.10);
+  --shadow-xl:   0px 20px 25px -5px rgba(0,0,0,0.10), 0px 8px 10px -6px rgba(0,0,0,0.10);
+  --shadow-card: 0px 2px 8px 0px rgba(0,0,0,0.04);
+
+  /* ── Status Colors (EyeGuard) ───────────────────────────── */
+
+  --color-status-inactive: #9CA3AF;
+  --color-status-ok:       #22C55E;
+  --color-status-caution:  #F59E0B;
+  --color-status-danger:   #EF4444;
+  --color-status-loading:  #6B7280;
+
+  /* ── Dark Theme Colors (EyeGuard full-page) ──────────────── */
+
+  --color-dark-50:     #F8FAFC;
+  --color-dark-300:    #94A3B8;
+  --color-dark-500:    #64748B;
+  --color-dark-600:    #475569;
+  --color-dark-900:    #0F172A;
+  --color-dark-action: #3B82F6;
 
   /* ── Blur ────────────────────────────────────────────────── */
   /* Source: Other.json blur/*                                 */
@@ -172,4 +192,23 @@
   --blur-lg:  16px;
   --blur-xl:  24px;
 
+}
+
+/* ── Overlay Gradient Utilities ──────────────────────────── */
+/* 이미지 위 텍스트 가독성용 그라디언트 오버레이 공통 패턴   */
+
+@utility overlay-card {
+  background: linear-gradient(to top, color-mix(in srgb, black 80%, transparent), color-mix(in srgb, black 20%, transparent), transparent);
+}
+
+@utility overlay-poster {
+  background: linear-gradient(to top, color-mix(in srgb, black 60%, transparent), transparent, transparent);
+}
+
+@utility overlay-banner {
+  background: linear-gradient(to top, color-mix(in srgb, black 80%, transparent), transparent, transparent);
+}
+
+@utility overlay-player {
+  background: linear-gradient(180deg, color-mix(in srgb, black 55%, transparent), transparent, color-mix(in srgb, black 80%, transparent));
 }

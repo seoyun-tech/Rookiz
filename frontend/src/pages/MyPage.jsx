@@ -1,12 +1,28 @@
 import { useState } from 'react';
-import { Nav } from '../components/common/Nav';
-import { Footer } from '../components/common/Footer';
+import { Nav } from '../components/Nav';
+import { Footer } from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser, faAward, faLeaf, faBan, faCheck, faCalendarDays, faPencil,
   faArrowTrendUp, faClock, faUserShield, faCircleCheck, faCircleMinus,
   faCirclePlus, faUserCheck, faCircleExclamation, faShieldHeart,
 } from '@fortawesome/free-solid-svg-icons';
+
+/* ── AlertRow: variant="blue" | "secondary" ── */
+const ALERT_STYLE = {
+  blue:      { wrap: "bg-blue-100 border-blue-500",           icon: "text-blue-900",      text: "text-blue-900" },
+  secondary: { wrap: "bg-secondary-100 border-secondary-500", icon: "text-secondary-500", text: "text-secondary-500" },
+};
+
+function AlertRow({ variant, icon, children }) {
+  const s = ALERT_STYLE[variant];
+  return (
+    <div className={`${s.wrap} border rounded-3xl h-[62px] flex items-center px-[12px] gap-[10px]`}>
+      <FontAwesomeIcon icon={icon} className={`${s.icon} text-[20px] shrink-0`} />
+      <p className={`text-sm font-semibold leading-5 ${s.text}`}>{children}</p>
+    </div>
+  );
+}
 
 /* ── 마이루 통계 ── */
 const profileStats = [
@@ -180,20 +196,12 @@ export default function MyPage() {
               <div className="flex gap-[6px] items-stretch">
                 {/* 알림 2개 */}
                 <div className="flex flex-col gap-[12px] flex-1">
-                  {/* 파란 알림 */}
-                  <div className="bg-blue-100 border border-blue-500 rounded-3xl h-[62px] flex items-center px-[12px] gap-[10px]">
-                    <FontAwesomeIcon icon={faUserCheck} className="text-blue-900 text-[20px] shrink-0" />
-                    <p className="text-sm font-semibold text-blue-900 leading-5">
-                      이번 주 시청한 모든 콘텐츠가 연령 기준에 적합해요
-                    </p>
-                  </div>
-                  {/* 빨간 알림 */}
-                  <div className="bg-secondary-100 border border-secondary-500 rounded-3xl h-[62px] flex items-center px-[12px] gap-[10px]">
-                    <FontAwesomeIcon icon={faCircleExclamation} className="text-secondary-500 text-[20px] shrink-0" />
-                    <p className="text-sm font-semibold leading-5" style={{ color: '#ca3500' }}>
-                      일일 시청 시간이 권장 시간을 초과한 날이 있어요
-                    </p>
-                  </div>
+                  <AlertRow variant="blue" icon={faUserCheck}>
+                    이번 주 시청한 모든 콘텐츠가 연령 기준에 적합해요
+                  </AlertRow>
+                  <AlertRow variant="secondary" icon={faCircleExclamation}>
+                    일일 시청 시간이 권장 시간을 초과한 날이 있어요
+                  </AlertRow>
                 </div>
 
                 {/* AI 안전점수 */}

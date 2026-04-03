@@ -8,7 +8,19 @@
       "Bash(npx vite:*)",
       "mcp__claude_ai_Figma__get_metadata",
       "Bash(npm install:*)",
-      "mcp__claude_ai_Figma__get_screenshot"
-    ]
+      "mcp__claude_ai_Figma__get_screenshot",
+      "Read(//e/Rookiz/**)",
+      "Bash(gh pr:*)",
+      "Bash(mv src/components/common/*.jsx src/components/)",
+      "Bash(rmdir src/components/common)",
+      "Bash(sed:*)",
+      "Bash(ls:*)",
+      "Bash(grep -n 'text-yellow-400\\\\|text-green-400\\\\|text-green-500\\\\|text-green-600\\\\|bg-blue-100\\\\|border-blue-' /e/Rookiz/frontend/src/components/*.jsx)",
+      "Bash(grep -n \"import.*from.*components\" /e/Rookiz/frontend/src/pages/*.jsx)",
+      "Bash(grep -n '\\\\[#\\\\|\\\\[rgba\\\\|\\\\[rgb' /e/Rookiz/frontend/src/components/*.jsx)",
+      "Bash(grep -n \"style={{\" /e/Rookiz/frontend/src/components/*.jsx /e/Rookiz/frontend/src/pages/*.jsx)",
+      "Bash(grep:*)"
+    ],
+    "autoApproveActions": true
   }
 }

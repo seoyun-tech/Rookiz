@@ -209,7 +209,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
       )}
 
       {/* 그라디언트 오버레이 */}
-      <div className="absolute inset-0 pointer-events-none bg-linear-[180deg] from-black/55 via-transparent to-black/80" />
+      <div className="absolute inset-0 pointer-events-none overlay-player" />
 
       {/* ── 컨트롤 레이어 ── */}
       {ctrlVisible && (

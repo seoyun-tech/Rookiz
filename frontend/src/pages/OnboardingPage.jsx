@@ -3,10 +3,10 @@ import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { StepIndicator } from "../components/common/StepIndicator";
-import { LoginCharacter } from "../components/common/LoginCharacter";
-import { LoginInput } from "../components/common/LoginInput";
-import { LoginBtn } from "../components/common/LoginBtn";
+import { StepIndicator } from "../components/StepIndicator";
+import { LoginCharacter } from "../components/LoginCharacter";
+import { LoginInput } from "../components/LoginInput";
+import { Button } from "../components/Button";
 
 /* ── Step 1: 계정 생성 ────────────────────────────────── */
 function StepIntro({ form, onChange, onNext }) {
@@ -37,9 +37,9 @@ function StepIntro({ form, onChange, onNext }) {
         onChange={onChange("password")}
       />
 
-      <LoginBtn active={!!isValid} onClick={onNext}>
+      <Button variant="primary" active={!!isValid} onClick={onNext}>
         시작하기
-      </LoginBtn>
+      </Button>
 
       <p className="text-xs text-gray-400">
         이미 계정이 있으신가요?{" "}
@@ -72,7 +72,7 @@ function AgeCard({ card, selected, onSelect }) {
     <button
       onClick={() => onSelect(card.id)}
       className={twMerge(
-        "bg-white border-2 rounded-3xl shadow-[0px_2px_8px_0px_rgba(0,0,0,0.04)] p-6 pb-2 w-[248px] flex flex-col items-start gap-4 cursor-pointer transition-colors",
+        "bg-white border-2 rounded-3xl shadow-card p-6 pb-2 w-[248px] flex flex-col items-start gap-4 cursor-pointer transition-colors",
         selected ? "border-primary-500" : "border-gray-100 hover:border-gray-300"
       )}
     >
@@ -156,9 +156,9 @@ function StepAgeSelect({ selected, onSelect, onNext, onBack }) {
         ))}
       </div>
 
-      <LoginBtn active={!!selected} showArrow onClick={onNext}>
+      <Button variant="primary" active={!!selected} showArrow onClick={onNext}>
         다음
-      </LoginBtn>
+      </Button>
     </div>
   );
 }
@@ -182,9 +182,9 @@ function StepGreeting({ ageGroup, onNext, onBack }) {
         <div className="size-2 rounded-full bg-gray-100" />
       </div>
 
-      <LoginBtn active showArrow onClick={onNext}>
+      <Button variant="primary" active showArrow onClick={onNext}>
         다음
-      </LoginBtn>
+      </Button>
     </div>
   );
 }
