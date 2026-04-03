@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser, faAward, faLeaf, faBan, faCheck, faCalendarDays, faPencil,
   faArrowTrendUp, faClock, faUserShield, faCircleCheck, faCircleMinus,
-  faCirclePlus, faUserCheck, faCircleExclamation, faShieldHeart, faAngleRight,
+  faCirclePlus, faUserCheck, faCircleExclamation, faShieldHeart,
 } from '@fortawesome/free-solid-svg-icons';
 
 /* ── 마이루 통계 ── */
@@ -313,32 +313,6 @@ export default function MyPage() {
               <FontAwesomeIcon icon={faPencil} className="text-[16px]" />
               케어루 수정하기
             </button>
-          </div>
-        </section>
-
-        {/* ── 찜한 영상 ── */}
-        <section className="flex flex-col gap-9">
-          <div className="flex items-center justify-between">
-            <h2 className="text-4xl font-extrabold text-gray-800">찜한 영상</h2>
-            <button className="flex items-center gap-1 text-lg font-bold text-gray-800">
-              더보기
-              <FontAwesomeIcon icon={faAngleRight} className="text-sm" />
-            </button>
-          </div>
-          <div className="flex gap-10">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="w-[270px] h-[360px] rounded-3xl overflow-hidden relative shrink-0 shadow-sm">
-                <img
-                  src={`https://picsum.photos/seed/fav${i}/270/360`}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-linear-[to_top] from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-6">
-                  <p className="text-xl font-extrabold text-white leading-7">신비한 과학이야기</p>
-                </div>
-              </div>
-            ))}
           </div>
         </section>
 
