@@ -121,10 +121,10 @@ function PreviewBar({ played, onSeek }) {
 }
 
 // ── 메인 VideoPlayer ──────────────────────────────────────────────
-export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, className }) {
-  const [playing, setPlaying]   = useState(false);
-  const [hasStarted, setHasStarted] = useState(false); // 첫 재생 여부 (state로 관리)
-  const [muted, setMuted]       = useState(false);
+export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, className, autoPlay = false }) {
+  const [playing, setPlaying]   = useState(autoPlay && !!youtubeKey);
+  const [hasStarted, setHasStarted] = useState(autoPlay && !!youtubeKey);
+  const [muted, setMuted]       = useState(autoPlay); // 자동재생 시 음소거로 시작 (브라우저 정책)
   const [played, setPlayed]     = useState(0);
   const [duration, setDuration] = useState(0);
   const [ctrlVisible,   setCtrlVisible]   = useState(true);

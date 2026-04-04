@@ -377,6 +377,7 @@ export default function DetailPage({ movieId: propMovieId, mediaType: propMediaT
         subtitle={`시즌 ${DEFAULT_SEASON} · ${DEFAULT_EP_ID}화 - 우주의 신비`}
         onBack={onClose ?? (() => navigate(-1))}
         className={onClose ? "rounded-t-3xl" : "max-h-[560px]"}
+        autoPlay={!!trailer?.key}
       />
 
       {/* ② 콘텐츠 정보 */}
