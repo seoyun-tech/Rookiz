@@ -123,6 +123,7 @@ function PreviewBar({ played, onSeek }) {
 // ── 메인 VideoPlayer ──────────────────────────────────────────────
 export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, className }) {
   const [playing, setPlaying]   = useState(false);
+  const [hasStarted, setHasStarted] = useState(false); // 첫 재생 여부 (state로 관리)
   const [muted, setMuted]       = useState(false);
   const [played, setPlayed]     = useState(0);
   const [duration, setDuration] = useState(0);
@@ -131,7 +132,6 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
   const playerRef      = useRef(null);
   const timerRef       = useRef(null);
   const containerRef   = useRef(null);
-  const hasStarted     = useRef(false); // 첫 재생 여부
 
   // 3초 타이머 시작/리셋
   const resetTimer = useCallback(() => {
@@ -210,9 +210,9 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
         />
       )}
 
-      {/* 유튜브 플레이어 */}
-      {youtubeKey && (
-        <div className={twMerge("absolute inset-0", !playing && "invisible")}>
+      {/* 유튜브 플레이어 — 재생 버튼 누른 후에만 렌더링 */}
+      {youtubeKey && hasStarted && (
+        <div className="absolute inset-0">
           <ReactPlayer
             ref={playerRef}
             url={`https://www.youtube.com/watch?v=${youtubeKey}`}
@@ -222,6 +222,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
             muted={muted}
             onProgress={({ played: p }) => setPlayed(p)}
             onDuration={(d) => setDuration(d)}
+            config={{ youtube: { playerVars: { rel: 0, modestbranding: 1 } } }}
           />
         </div>
       )}
@@ -252,16 +253,16 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
           </div>
           <div className="flex items-center gap-2">
             <TopBtn faIcon={faTv} />
-            {hasStarted.current && <TopBtn faIcon={faUnlock} />}
+            {hasStarted && <TopBtn faIcon={faUnlock} />}
           </div>
         </div>
 
         {/* ── 중앙 ── */}
         <div className="flex-1 flex items-center justify-center">
-          {!hasStarted.current ? (
+          {!hasStarted ? (
             /* 프리뷰: 큰 플레이 버튼 + 안내 텍스트 */
             <BigPlayBtn onClick={() => {
-              hasStarted.current = true;
+              setHasStarted(true);
               togglePlay();
             }} />
           ) : (
@@ -293,7 +294,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
         </div>
 
         {/* ── 하단 ── */}
-        {!hasStarted.current ? (
+        {!hasStarted ? (
           /* 프리뷰: 볼륨(우하단) + 프리뷰바(최하단) */
           <>
             <div className="flex justify-end px-5 pb-3 md:px-7">
