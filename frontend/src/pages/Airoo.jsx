@@ -39,18 +39,18 @@ const INIT_MISSIONS = [
 const STARS = [
   { top: "31%", left: "0.8%",  size: 5, opacity: 0.59, color: "white"   },
   { top: "5%",  left: "33%",   size: 5, opacity: 0.37, color: "white"   },
-  { top: "1%",  left: "14%",   size: 4, opacity: 0.56, color: "#ffe14d" },
+  { top: "1%",  left: "14%",   size: 4, opacity: 0.56, color: "var(--color-star-gold)" },
   { top: "83%", left: "44%",   size: 5, opacity: 0.33, color: "white"   },
   { top: "42%", left: "4.5%",  size: 5, opacity: 0.52, color: "white"   },
-  { top: "88%", left: "1.8%",  size: 4, opacity: 0.23, color: "#ffe14d" },
+  { top: "88%", left: "1.8%",  size: 4, opacity: 0.23, color: "var(--color-star-gold)" },
   { top: "33%", left: "33%",   size: 5, opacity: 0.17, color: "white"   },
-  { top: "78%", left: "56%",   size: 3, opacity: 0.41, color: "#ffe14d" },
+  { top: "78%", left: "56%",   size: 3, opacity: 0.41, color: "var(--color-star-gold)" },
   { top: "81%", left: "73%",   size: 5, opacity: 0.29, color: "white"   },
   { top: "8%",  left: "75%",   size: 3, opacity: 0.30, color: "white"   },
-  { top: "14%", left: "89%",   size: 5, opacity: 0.12, color: "#ffe14d" },
-  { top: "77%", left: "27%",   size: 5, opacity: 0.36, color: "#ffe14d" },
+  { top: "14%", left: "89%",   size: 5, opacity: 0.12, color: "var(--color-star-gold)" },
+  { top: "77%", left: "27%",   size: 5, opacity: 0.36, color: "var(--color-star-gold)" },
   { top: "6%",  left: "93%",   size: 5, opacity: 0.36, color: "white"   },
-  { top: "68%", left: "88%",   size: 2, opacity: 0.12, color: "#ffe14d" },
+  { top: "68%", left: "88%",   size: 2, opacity: 0.12, color: "var(--color-star-gold)" },
   { top: "42%", left: "10%",   size: 4, opacity: 0.10, color: "white"   },
   { top: "13%", left: "25%",   size: 3, opacity: 0.50, color: "white"   },
 ];
@@ -150,8 +150,7 @@ export default function AiRoo() {
 
       {/* ── 히어로 섹션 ── */}
       <section
-        className="relative w-full overflow-hidden py-8 md:py-10 shrink-0"
-        style={{ background: "linear-gradient(169deg, #1A1032 0%, #2D1459 100%)" }}
+        className="relative w-full overflow-hidden py-8 md:py-10 shrink-0 bg-linear-[169deg] from-airoo-from to-airoo-to"
       >
         {STARS.map((s, i) => (
           <div

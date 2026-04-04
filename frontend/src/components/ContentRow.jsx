@@ -42,7 +42,7 @@ export function ContentRow({ title, items, layout = "scroll", badge, filter, onI
     return (
       <div className="flex gap-4 md:gap-6 overflow-x-auto overflow-y-hidden pb-2 w-full max-w-content scrollbar-hide">
         {items.map((item) => (
-          <Card key={item.id} image={item.image} title={item.title} size={item.size || "sm"} />
+          <Card key={item.id} image={item.image || getImageUrl(item.poster_path)} title={item.title || item.name} size={item.size || "sm"} onClick={() => onItemClick?.(item)} />
         ))}
       </div>
     );

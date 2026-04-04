@@ -181,6 +181,8 @@
   --shadow-xl:   0px 25px 50px -12px rgba(0,0,0,0.25);
   --shadow-card:       0px 2px 8px 0px rgba(0,0,0,0.04);
   --shadow-green-glow: 0px 4px 4px 0px var(--color-green-300);
+  --shadow-play-glow:    0 0 70px color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+  --shadow-play-glow-sm: 0 0 40px color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 
   /* ── Status Colors ──────────────────────────────────────── */
 
@@ -218,6 +220,12 @@
   --width-age-card:   248px;
   --width-eye-guard:  280px;
   --width-sticker:    200px;
+
+  /* ── Page-specific Colors ─────────────────────────────── */
+
+  --color-airoo-from: #1A1032;
+  --color-airoo-to:   #2D1459;
+  --color-star-gold:  #ffe14d;
 
 }
 

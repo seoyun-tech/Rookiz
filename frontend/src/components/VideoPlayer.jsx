@@ -72,7 +72,7 @@ function BigPlayBtn({ onClick }) {
     <div className="flex flex-col items-center gap-3 md:gap-4">
       <button
         onClick={onClick}
-        className="size-16 md:size-[87px] bg-primary-500 rounded-full flex items-center justify-center shadow-[0_0_70px_rgba(255,198,51,0.6)] hover:scale-105 transition-transform"
+        className="size-16 md:size-[87px] bg-primary-500 rounded-full flex items-center justify-center shadow-play-glow hover:scale-105 transition-transform"
         aria-label="재생"
       >
         <FontAwesomeIcon icon={faPlay} className="text-black text-xl md:text-[28px] translate-x-0.5" />
@@ -226,12 +226,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
       )}
 
       {/* 그라디언트 오버레이 */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.8) 100%)",
-        }}
-      />
+      <div className="absolute inset-0 pointer-events-none overlay-player" />
 
       {/* 컨트롤 레이어 — opacity 트랜지션으로 페이드 인/아웃 */}
       <div
@@ -281,7 +276,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); togglePlay(); resetTimer(); }}
-                className="size-[87px] bg-primary-500 rounded-full flex items-center justify-center shadow-[0_0_70px_rgba(255,198,51,0.6)] hover:scale-105 transition-transform"
+                className="size-[87px] bg-primary-500 rounded-full flex items-center justify-center shadow-play-glow hover:scale-105 transition-transform"
                 aria-label={playing ? "일시정지" : "재생"}
               >
                 <FontAwesomeIcon icon={playing ? faPause : faPlay} className="text-black text-[28px] translate-x-0.5" />
@@ -336,7 +331,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
                 <SmBtn faIcon={faBackwardStep} onClick={(e) => { e.stopPropagation(); resetTimer(); }} aria-label="이전" />
                 <button
                   onClick={(e) => { e.stopPropagation(); togglePlay(); resetTimer(); }}
-                  className="size-[50px] bg-primary-500 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(255,198,51,0.6)] hover:scale-105 transition-transform"
+                  className="size-[50px] bg-primary-500 rounded-full flex items-center justify-center shadow-play-glow-sm hover:scale-105 transition-transform"
                   aria-label={playing ? "일시정지" : "재생"}
                 >
                   <FontAwesomeIcon icon={playing ? faPause : faPlay} className="text-black text-base translate-x-0.5" />

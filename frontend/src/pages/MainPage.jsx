@@ -35,14 +35,18 @@ export default function MainPage({ mode: modeProp = "kids" }) {
   const { openMovie } = useMovieModal();
 
   useEffect(() => {
+    let stale = false;
     setError(false);
-    const safe = (promise, setter) => promise.then(setter).catch(() => setError(true));
+    const safe = (promise, setter) =>
+      promise.then((data) => { if (!stale) setter(data); })
+             .catch(() => { if (!stale) setError(true); });
 
     safe(fetchTrending(), setTrending);
     safe((isKids ? fetchKidsMovies : fetchJuniorMovies)(), setMovies);
     safe((isKids ? fetchLatestKidsMovies : fetchLatestJuniorMovies)(), setLatestMovies);
     safe((isKids ? fetchEnglishKidsContent : fetchEnglishJuniorContent)(), setEnglishContent);
     if (!isKids) safe(fetchJuniorDrama(), setDrama);
+    return () => { stale = true; };
   }, [isKids]);
 
   const openDetail = (item) => openMovie(item.id, item.media_type || "movie");
@@ -52,7 +56,7 @@ export default function MainPage({ mode: modeProp = "kids" }) {
     <div className={`min-h-screen flex flex-col items-center ${isKids ? "bg-green-100/50" : "bg-blue-100/50"}`}>
       <Nav activeTab="main" mode={mode} />
 
-      <HeroBanner image={getImageUrl(trending[0]?.backdrop_path || trending[0]?.poster_path, "original")} title="슈퍼 히어로 특공대!" desc="슈퍼히어로가 꿈인 승아는 친구들을 모아 특공대를 만든다!" subDesc="승아와 친구들의 좌충우돌 도전기" onPlay={() => trending[0] && openDetailById(trending[0].id)} onDetail={() => trending[0] && openDetailById(trending[0].id)} />
+      <HeroBanner image={getImageUrl(trending[0]?.backdrop_path || trending[0]?.poster_path, "original")} title={trending[0]?.title || trending[0]?.name || ""} desc={trending[0]?.overview || ""} onPlay={() => trending[0] && openDetailById(trending[0].id)} onDetail={() => trending[0] && openDetailById(trending[0].id)} />
 
       <main className="w-full max-w-container flex flex-col gap-6 md:gap-10">
         <AgeTabGroup activeMode={mode} />

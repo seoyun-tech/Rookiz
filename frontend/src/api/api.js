@@ -14,7 +14,7 @@ const api = axios.create({
 // ── 이미지 URL ────────────────────────────────────────────────
 
 export const getImageUrl = (path, size = "w500") =>
-  `https://image.tmdb.org/t/p/${size}${path}`;
+  path ? `https://image.tmdb.org/t/p/${size}${path}` : "";
 
 // ── 공통 헬퍼 ─────────────────────────────────────────────────
 
@@ -127,7 +127,7 @@ export const fetchTrending = () =>
 
 const ENGLISH_BASE_PARAMS = {
   with_genres: "16,10762",
-  original_language: "en",
+  with_original_language: "en",
   language: "en-US",
   sort_by: "popularity.desc",
   certification_country: "US",
@@ -172,7 +172,6 @@ export const fetchContentVideos = async (id, mediaType = "movie") => {
 export const fetchSimilarContent = (id, mediaType = "movie") =>
   fetchWithFallback(`${mediaType}/${id}/similar`);
 
-// 하위 호환
 export const fetchMovieDetail = (movieId) => fetchContentDetail(movieId, "movie");
 export const fetchMovieVideos = (movieId) => fetchContentVideos(movieId, "movie");
 export const fetchSimilarMovies = (movieId) => fetchSimilarContent(movieId, "movie");
