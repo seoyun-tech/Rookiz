@@ -52,18 +52,21 @@ export default function CategoryPage() {
   stateRef.current = { loading, hasMore, movies, visibleRows, page, mode, category };
 
   useEffect(() => {
+    let stale = false;
     const fetchFn = mode === "junior" ? config.junior : config.kids;
     setLoading(true);
     fetchFn(1)
       .then((data) => {
+        if (stale) return;
         setMovies(data);
         setPage(1);
         setVisibleRows(INITIAL_ROWS);
         setHasMore(data.length >= 20);
         animatedRef.current.clear();
       })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+      .catch((err) => { if (!stale) console.error(err); })
+      .finally(() => { if (!stale) setLoading(false); });
+    return () => { stale = true; };
   }, [mode, category]);
 
   // ── 추가 데이터 로드 (ref 기반 디바운스) ──

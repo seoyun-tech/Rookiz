@@ -15,10 +15,13 @@ function PinModal({ onSuccess, onCancel }) {
   const [digits, setDigits] = useState(["", "", "", ""]);
   const [error, setError] = useState(false);
   const inputRefs = useRef([]);
+  const timerRef = useRef(null);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, []);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   function handleChange(idx, val) {
     const d = val.replace(/\D/g, "").slice(-1);
@@ -32,7 +35,7 @@ function PinModal({ onSuccess, onCancel }) {
         onSuccess();
       } else {
         setError(true);
-        setTimeout(() => {
+        timerRef.current = setTimeout(() => {
           setDigits(["", "", "", ""]);
           setError(false);
           inputRefs.current[0]?.focus();
@@ -91,9 +94,12 @@ function AddProfileModal({ onAdd, onCancel }) {
   const [photo, setPhoto] = useState(null);
   const fileRef = useRef(null);
 
+  useEffect(() => () => { if (photo) URL.revokeObjectURL(photo); }, [photo]);
+
   function handlePhoto(e) {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (photo) URL.revokeObjectURL(photo);
     setPhoto(URL.createObjectURL(file));
   }
 

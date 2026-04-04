@@ -30,10 +30,13 @@ function ChangePinModal({ onClose }) {
   const [error, setError]   = useState(false);
   const [done, setDone]     = useState(false);
   const inputRefs = useRef([]);
+  const timerRef = useRef(null);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, [step]);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   function handleChange(idx, val) {
     const d = val.replace(/\D/g, '').slice(-1);
@@ -52,7 +55,7 @@ function ChangePinModal({ onClose }) {
 
   function fail() {
     setError(true);
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setDigits(['', '', '', '']);
       setError(false);
       inputRefs.current[0]?.focus();
@@ -72,7 +75,7 @@ function ChangePinModal({ onClose }) {
       if (pin !== newPin) { fail(); return; }
       localStorage.setItem(PIN_KEY, pin);
       setDone(true);
-      setTimeout(() => onClose(), 1500);
+      timerRef.current = setTimeout(() => onClose(), 1500);
     }
   }
 
@@ -249,6 +252,7 @@ export default function MyPage() {
   function handlePhoto(e) {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (draft.photo) URL.revokeObjectURL(draft.photo);
     const url = URL.createObjectURL(file);
     setDraft(p => ({ ...p, photo: url }));
   }

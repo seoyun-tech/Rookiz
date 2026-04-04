@@ -253,6 +253,7 @@ export default function DetailPage({ movieId: propMovieId, mediaType: propMediaT
 
   useEffect(() => {
     if (!movieId) return;
+    let stale = false;
     const load = async () => {
       setLoading(true);
       try {
@@ -261,17 +262,21 @@ export default function DetailPage({ movieId: propMovieId, mediaType: propMediaT
           fetchContentVideos(movieId, mediaType),
           fetchSimilarContent(movieId, mediaType),
         ]);
+        if (stale) return;
         setMovie(m);
         setVideos(v ?? []);
         setSimilar(s ?? []);
       } catch (err) {
-        console.error(err);
+        if (!stale) console.error(err);
       } finally {
-        setLoading(false);
-        if (!onClose) window.scrollTo(0, 0);
+        if (!stale) {
+          setLoading(false);
+          if (!onClose) window.scrollTo(0, 0);
+        }
       }
     };
     load();
+    return () => { stale = true; };
   }, [movieId, mediaType]);
 
   const handleSimilarClick = (id) => {
@@ -409,7 +414,7 @@ export default function DetailPage({ movieId: propMovieId, mediaType: propMediaT
             {similar.slice(0, 4).map((m) => (
               <div key={m.id} className="cursor-pointer" onClick={() => handleSimilarClick(m.id)}>
                 <Card
-                  title={m.title}
+                  title={m.title || m.name}
                   image={getImageUrl(m.poster_path, "w300")}
                   size="sm"
                   className="aspect-3/4 rounded-3_5xl"
