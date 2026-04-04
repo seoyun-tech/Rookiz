@@ -122,9 +122,10 @@ function PreviewBar({ played, onSeek }) {
 
 // ── 메인 VideoPlayer ──────────────────────────────────────────────
 export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, className, autoPlay = false }) {
-  const [playing, setPlaying]   = useState(autoPlay && !!youtubeKey);
+  const [playing, setPlaying]   = useState(false); // onReady 후 재생 (AbortError 방지)
   const [hasStarted, setHasStarted] = useState(autoPlay && !!youtubeKey);
   const [muted, setMuted]       = useState(autoPlay); // 자동재생 시 음소거로 시작 (브라우저 정책)
+  const autoPlayRef = useRef(autoPlay && !!youtubeKey);
   const [played, setPlayed]     = useState(0);
   const [duration, setDuration] = useState(0);
   const [ctrlVisible,   setCtrlVisible]   = useState(true);
@@ -220,6 +221,7 @@ export function VideoPlayer({ youtubeKey, poster, title, subtitle, onBack, class
             height="100%"
             playing={playing}
             muted={muted}
+            onReady={() => { if (autoPlayRef.current) setPlaying(true); }}
             onProgress={({ played: p }) => setPlayed(p)}
             onDuration={(d) => setDuration(d)}
             config={{ youtube: { playerVars: { rel: 0, modestbranding: 1 } } }}
