@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { gsap } from "gsap";
@@ -174,18 +175,18 @@ export default function CategoryPage() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center">
       <Nav activeTab="main" />
 
-      <div className="w-full max-w-container flex flex-col gap-9 p-10">
+      <div className="w-full max-w-container flex flex-col gap-5 md:gap-9 px-4 py-6 md:px-6 md:py-8 lg:p-10">
         {/* 타이틀 */}
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-extrabold text-gray-700 leading-8">
-            {config.title}
+            인기 콘텐츠
           </h1>
         </div>
 
         {/* 카드 그리드 */}
         <div
           ref={gridRef}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-10"
         >
           {visibleMovies.map((movie, i) => (
             <div key={movie.id} data-card={i} className="opacity-0">
