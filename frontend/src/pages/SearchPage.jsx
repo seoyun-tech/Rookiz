@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
-import { searchMovies, fetchSimilarMovies, getImageUrl } from '../api/api';
+import { searchMovies, getImageUrl } from '../api/api';
 import { Nav } from '../components/Nav';
 import { Footer } from '../components/Footer';
 import { Searchbar } from '../components/Searchbar';
@@ -31,7 +31,6 @@ export default function SearchPage() {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const location = useLocation();
   const { openMovie } = useMovieModal();
@@ -42,14 +41,12 @@ export default function SearchPage() {
   useEffect(() => {
     setResults([]);
     setQuery('');
-    setSelectedMovie(null);
   }, [location.pathname]);
 
   const handleSearch = async (searchTerm) => {
     if (!searchTerm?.trim()) return;
     setIsLoading(true);
     setQuery(searchTerm);
-    setSelectedMovie(null);
 
     try {
       const movies = await searchMovies(searchTerm);
@@ -61,21 +58,8 @@ export default function SearchPage() {
     }
   };
 
-  const handleCardClick = async (movie) => {
-    setSelectedMovie(movie);
-    setIsLoading(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    try {
-      const similarMovies = await fetchSimilarMovies(movie.id);
-      setResults(filterByAge(similarMovies, currentMode));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const handleOpenDetail = (movie) => {
+  const handleCardClick = (movie) => {
     const mediaType = movie.first_air_date ? "tv" : "movie";
     openMovie(movie.id, mediaType, currentMode);
   };
@@ -92,48 +76,7 @@ export default function SearchPage() {
           <Searchbar className="w-full max-w-searchbar" onSearch={handleSearch} />
         </div>
 
-        {selectedMovie && (
-          <div className="bg-gray-50 rounded-4xl p-5 md:p-8 lg:p-12 flex flex-col md:flex-row gap-5 md:gap-8 items-center border border-gray-100">
-            <img
-              src={getImageUrl(selectedMovie.poster_path)}
-              className="w-36 md:w-48 lg:w-64 rounded-card-xl shadow-xl shrink-0"
-              alt={selectedMovie.title}
-            />
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2">
-                <span className={`px-4 py-1 rounded-full font-bold text-sm border ${
-                  currentMode === 'junior' 
-                  ? 'bg-blue-50 border-blue-200 text-blue-600' 
-                  : 'bg-primary-50 border-primary-200 text-primary-600'
-                }`}>
-                  {currentMode === 'junior' ? '🎒 주니어 8~12세 안심 시청' : '🐥 키즈 4~7세 안심 시청'}
-                </span>
-              </div>
-
-              <h2 className="text-xl md:text-3xl lg:text-5xl font-black">{selectedMovie.title}</h2>
-              <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-6 md:leading-8 max-w-2xl">
-                {selectedMovie.overview || "상세 정보가 준비되지 않았습니다."}
-              </p>
-              
-              <div className="flex gap-3 flex-wrap">
-                <button
-                  onClick={() => handleOpenDetail(selectedMovie)}
-                  className="w-fit px-8 py-3 bg-primary-500 hover:bg-primary-400 rounded-full font-bold text-gray-950 cursor-pointer transition-colors"
-                >
-                  상세 보기
-                </button>
-                <button
-                  onClick={() => { setSelectedMovie(null); handleSearch(query); }}
-                  className="w-fit px-8 py-3 bg-white border border-gray-200 rounded-full font-bold text-gray-500 hover:text-primary-600 cursor-pointer shadow-sm"
-                >
-                  검색 결과로 돌아가기 ✕
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <ContentRow title={selectedMovie ? "추천 연관 영상" : (query ? `'${query}' 검색 결과` : "인기 영상")}>
+        <ContentRow title={query ? `'${query}' 검색 결과` : "인기 영상"}>
           {isLoading ? (
             <div className="w-full py-20 text-center font-bold text-gray-400 text-2xl">검색 중...</div>
           ) : (
