@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useMovieModal } from "../context/MovieModalContext";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
@@ -33,6 +33,7 @@ export default function MainPage({ mode: modeProp = "kids" }) {
   const [englishContent, setEnglishContent] = useState([]);
   const [error, setError] = useState(false);
   const { openMovie } = useMovieModal();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let stale = false;
@@ -92,7 +93,7 @@ export default function MainPage({ mode: modeProp = "kids" }) {
             <ContentRow title="인기 있는 캐릭터" showViewAll={false} className="px-4 md:px-10">
               <div className="flex gap-4 md:gap-10 overflow-x-auto pb-4 scrollbar-hide">
                 {CHARACTERS.map((char) => (
-                  <CharacterCard key={char.id} name={char.name} image={getImageUrl(char.poster_path)} />
+                  <CharacterCard key={char.id} name={char.name} image={getImageUrl(char.poster_path)} onClick={() => navigate(`/search?q=${encodeURIComponent(char.name)}&mode=${mode}`)} />
                 ))}
               </div>
             </ContentRow>

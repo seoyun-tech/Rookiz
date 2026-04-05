@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useSearchParams } from 'react-router';
 import { searchMovies, getImageUrl } from '../api/api';
 import { Nav } from '../components/Nav';
 import { Footer } from '../components/Footer';
@@ -46,15 +46,23 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { openMovie } = useMovieModal();
 
+  const paramMode = searchParams.get('mode');
   const isJuniorPath = location.pathname.includes('junior');
-  const currentMode = isJuniorPath ? 'junior' : 'kids';
+  const currentMode = paramMode ?? (isJuniorPath ? 'junior' : 'kids');
 
   useEffect(() => {
     setResults([]);
     setQuery('');
   }, [location.pathname]);
+
+  // URL에 q 파라미터가 있으면 자동 검색
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) handleSearch(q);
+  }, [searchParams.get('q')]);
 
   const handleSearch = async (searchTerm) => {
     if (!searchTerm?.trim()) return;
