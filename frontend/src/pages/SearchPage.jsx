@@ -6,6 +6,7 @@ import { Footer } from '../components/Footer';
 import { Searchbar } from '../components/Searchbar';
 import { ContentRow } from '../components/ContentRow';
 import { Card } from '../components/Card';
+import { useMovieModal } from '../context/MovieModalContext';
 
 const GENRE_DRAMA = 18;
 const GENRE_ROMANCE = 10749;
@@ -33,6 +34,7 @@ export default function SearchPage() {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const location = useLocation();
+  const { openMovie } = useMovieModal();
 
   const isJuniorPath = location.pathname.includes('junior');
   const currentMode = isJuniorPath ? 'junior' : 'kids';
@@ -62,16 +64,20 @@ export default function SearchPage() {
   const handleCardClick = async (movie) => {
     setSelectedMovie(movie);
     setIsLoading(true);
-    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     try {
       const similarMovies = await fetchSimilarMovies(movie.id);
       setResults(filterByAge(similarMovies, currentMode));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error(error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOpenDetail = (movie) => {
+    const mediaType = movie.first_air_date ? "tv" : "movie";
+    openMovie(movie.id, mediaType, currentMode);
   };
 
   return (
@@ -109,12 +115,20 @@ export default function SearchPage() {
                 {selectedMovie.overview || "상세 정보가 준비되지 않았습니다."}
               </p>
               
-              <button 
-                onClick={() => { setSelectedMovie(null); handleSearch(query); }} 
-                className="w-fit px-8 py-3 bg-white border border-gray-200 rounded-full font-bold text-gray-500 hover:text-primary-600 cursor-pointer shadow-sm"
-              >
-                검색 결과로 돌아가기 ✕
-              </button>
+              <div className="flex gap-3 flex-wrap">
+                <button
+                  onClick={() => handleOpenDetail(selectedMovie)}
+                  className="w-fit px-8 py-3 bg-primary-500 hover:bg-primary-400 rounded-full font-bold text-gray-950 cursor-pointer transition-colors"
+                >
+                  상세 보기
+                </button>
+                <button
+                  onClick={() => { setSelectedMovie(null); handleSearch(query); }}
+                  className="w-fit px-8 py-3 bg-white border border-gray-200 rounded-full font-bold text-gray-500 hover:text-primary-600 cursor-pointer shadow-sm"
+                >
+                  검색 결과로 돌아가기 ✕
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -126,9 +140,9 @@ export default function SearchPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-10">
               {results.length > 0 ? (
                 results.map(movie => (
-                  <Card 
+                  <Card
                     key={movie.id}
-                    title={movie.title}
+                    title={movie.title || movie.name}
                     image={getImageUrl(movie.poster_path)}
                     onClick={() => handleCardClick(movie)}
                     className="cursor-pointer aspect-[3/4] rounded-4xl"
