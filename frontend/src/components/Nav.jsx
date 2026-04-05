@@ -203,6 +203,7 @@ function NavProfile() {
   const [pinTargetId, setPinTargetId] = useState(null);
   const [addOpen, setAddOpen] = useState(false);
   const dropRef = useRef(null);
+  const navigate = useNavigate();
 
   const pinTarget = pinTargetId != null ? (profiles.find((p) => p.id === pinTargetId) ?? null) : null;
 
@@ -216,6 +217,11 @@ function NavProfile() {
     return () => document.removeEventListener("mousedown", onOutside);
   }, [open]);
 
+  function goToProfileHome(target) {
+    navigate(target.level >= 2 ? "/junior" : "/home");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
   function handleSelectProfile(target) {
     if (target.id === activeId) {
       setOpen(false);
@@ -228,11 +234,15 @@ function NavProfile() {
     } else {
       setActiveId(target.id);
       setOpen(false);
+      goToProfileHome(target);
     }
   }
 
   function handlePinSuccess() {
-    if (pinTargetId != null) setActiveId(pinTargetId);
+    if (pinTargetId != null) {
+      setActiveId(pinTargetId);
+      goToProfileHome(pinTarget);
+    }
     setPinTargetId(null);
   }
 

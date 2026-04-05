@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useMovieModal } from "../context/MovieModalContext";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
@@ -33,6 +33,7 @@ export default function MainPage({ mode: modeProp = "kids" }) {
   const [englishContent, setEnglishContent] = useState([]);
   const [error, setError] = useState(false);
   const { openMovie } = useMovieModal();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let stale = false;
@@ -49,14 +50,13 @@ export default function MainPage({ mode: modeProp = "kids" }) {
     return () => { stale = true; };
   }, [isKids]);
 
-  const openDetail = (item) => openMovie(item.id, item.media_type || "movie");
-  const openDetailById = (id, type = "movie") => openMovie(id, type);
+  const open = (id, type = "movie", sec = null) => openMovie(id, type, mode, sec);
 
   return (
     <div className={`min-h-screen flex flex-col items-center ${isKids ? "bg-green-100/50" : "bg-blue-100/50"}`}>
       <Nav activeTab="main" mode={mode} />
 
-      <HeroBanner image={getImageUrl(trending[0]?.backdrop_path || trending[0]?.poster_path, "original")} title={trending[0]?.title || trending[0]?.name || ""} desc={trending[0]?.overview || ""} onPlay={() => trending[0] && openDetailById(trending[0].id)} onDetail={() => trending[0] && openDetailById(trending[0].id)} />
+      <HeroBanner image={getImageUrl(trending[0]?.backdrop_path || trending[0]?.poster_path, "original")} title={trending[0]?.title || trending[0]?.name || ""} desc={trending[0]?.overview || ""} onPlay={() => trending[0] && open(trending[0].id, "movie", "popular")} onDetail={() => trending[0] && open(trending[0].id, "movie", "popular")} />
 
       <main className="w-full max-w-container flex flex-col gap-6 md:gap-10">
         <AgeTabGroup activeMode={mode} />
@@ -70,7 +70,7 @@ export default function MainPage({ mode: modeProp = "kids" }) {
             layout="grid"
             badge="eng"
             filter={(item) => item.original_language === "en"}
-            onItemClick={(item) => openMovie(item.id, "tv")}
+            onItemClick={(item) => open(item.id, "tv", "english")}
             viewAllLink={`/category?category=english&mode=${mode}`}
             className="px-4 md:px-10"
           />
@@ -79,7 +79,7 @@ export default function MainPage({ mode: modeProp = "kids" }) {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-rows-2 gap-4 md:gap-6 lg:gap-10">
               {movies.slice(0, 5).map((item, i) => (
                 <div key={item.id} className={i === 0 ? "col-span-2 lg:row-span-2" : ""}>
-                  <Card size={i === 0 ? "lg" : "sm"} title={item.title || item.name} image={getImageUrl(item.poster_path)} className={i === 0 ? "aspect-[16/9] lg:aspect-auto lg:h-full" : "aspect-square"} onClick={() => openDetailById(item.id)}>
+                  <Card size={i === 0 ? "lg" : "sm"} title={item.title || item.name} image={getImageUrl(item.poster_path)} className={i === 0 ? "aspect-[16/9] lg:aspect-auto lg:h-full" : "aspect-square"} onClick={() => open(item.id, "movie", "recommend")}>
                     <span className="text-xs md:text-sm font-semibold text-primary-500 mt-0.5 md:mt-1">
                       <FontAwesomeIcon icon={faStar} /> {item.vote_average?.toFixed(1)}
                     </span>
@@ -93,17 +93,17 @@ export default function MainPage({ mode: modeProp = "kids" }) {
             <ContentRow title="인기 있는 캐릭터" showViewAll={false} className="px-4 md:px-10">
               <div className="flex gap-4 md:gap-10 overflow-x-auto pb-4 scrollbar-hide">
                 {CHARACTERS.map((char) => (
-                  <CharacterCard key={char.id} name={char.name} image={getImageUrl(char.poster_path)} />
+                  <CharacterCard key={char.id} name={char.name} image={getImageUrl(char.poster_path)} onClick={() => navigate(`/search?q=${encodeURIComponent(char.name)}&mode=${mode}`)} />
                 ))}
               </div>
             </ContentRow>
           )}
 
-          <ContentRow title="인기 콘텐츠" items={movies} layout="grid" badge="rating" onItemClick={(item) => openDetailById(item.id)} viewAllLink={`/category?category=popular&mode=${mode}`} className="px-4 md:px-10" />
+          <ContentRow title="인기 콘텐츠" items={movies} layout="grid" badge="rating" onItemClick={(item) => open(item.id, "movie", "popular")} viewAllLink={`/category?category=popular&mode=${mode}`} className="px-4 md:px-10" />
 
-          {!isKids && <ContentRow title="주니어 드라마" items={drama} layout="grid" badge="rating" onItemClick={(item) => openDetailById(item.id)} viewAllLink={`/category?category=drama&mode=${mode}`} className="px-4 md:px-10" />}
+          {!isKids && <ContentRow title="주니어 드라마" items={drama} layout="grid" badge="rating" onItemClick={(item) => open(item.id, "tv", "popular")} viewAllLink={`/category?category=drama&mode=${mode}`} className="px-4 md:px-10" />}
 
-          <ContentRow title="최신 콘텐츠" items={latestMovies} layout="grid" onItemClick={(item) => openDetailById(item.id)} viewAllLink={`/category?category=latest&mode=${mode}`} className="px-4 md:px-10" />
+          <ContentRow title="최신 콘텐츠" items={latestMovies} layout="grid" onItemClick={(item) => open(item.id, "movie", "new")} viewAllLink={`/category?category=latest&mode=${mode}`} className="px-4 md:px-10" />
 
           <PremiumBanner />
         </div>

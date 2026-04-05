@@ -165,24 +165,30 @@ function StepAgeSelect({ selected, onSelect, onNext, onBack }) {
 
 /* ── Step 3: AI 인사 ──────────────────────────────────── */
 function StepGreeting({ ageGroup, onNext, onBack }) {
-  const title = ageGroup === "kids" ? "안녕 나는 아기 루야" : "안녕 나는 꼬마 루야";
+  const title = "이제 신나는 모험을 떠나볼까?";
 
   return (
     <div className="flex flex-col items-center w-full max-w-onboard-md px-4 gap-6 pb-12 md:pb-25">
       <BackBtn onClick={onBack} />
-      <LoginCharacter
-        title={`"${title}"`}
-        subtitle={null}
-      />
 
-      {/* 페이지네이션 도트 */}
-      <div className="flex items-center gap-2">
-        <div className="w-5 h-2 rounded-full bg-primary-500" />
-        <div className="size-2 rounded-full bg-gray-100" />
-        <div className="size-2 rounded-full bg-gray-100" />
+      {/* AI 루 환영 영상 */}
+      <div className="relative flex flex-col items-center w-full max-w-[346px]">
+        <div className="size-64 rounded-full overflow-hidden shadow-lg relative z-10">
+          <video
+            src="/roo-welcome-video.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="w-full backdrop-blur-sm bg-white/38 rounded-3xl shadow-md px-6 py-3 mt-3 text-center">
+          <p className="text-2xl font-extrabold text-primary-950">{`"${title}"`}</p>
+        </div>
       </div>
 
-      <Button variant="primary" active showArrow onClick={onNext}>
+<Button variant="primary" active showArrow onClick={onNext}>
         다음
       </Button>
     </div>
