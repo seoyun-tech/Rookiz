@@ -8,21 +8,34 @@ import { ContentRow } from '../components/ContentRow';
 import { Card } from '../components/Card';
 import { useMovieModal } from '../context/MovieModalContext';
 
-const GENRE_DRAMA = 18;
-const GENRE_ROMANCE = 10749;
-const GENRE_HORROR = 27;
-const GENRE_CRIME = 80;
-const GENRE_THRILLER = 53;
-const GENRE_MYSTERY = 9648;
-const FORBIDDEN_GENRES = [GENRE_DRAMA, GENRE_ROMANCE, GENRE_HORROR, GENRE_CRIME, GENRE_THRILLER, GENRE_MYSTERY];
+// 성인/청소년 대상 장르 — 키즈·주니어 모두 제외
+const FORBIDDEN_GENRES = [
+  18,    // 드라마
+  10749, // 로맨스
+  27,    // 공포
+  80,    // 범죄
+  53,    // 스릴러
+  9648,  // 미스터리
+  10752, // 전쟁
+  36,    // 역사
+];
+
+// 키즈 전용 장르 — 애니메이션 / 가족 / 키즈(TV)
+const KIDS_GENRES = [16, 10751, 10762];
 
 function filterByAge(movies, mode) {
   return movies.filter((movie) => {
-    const hasForbidden = movie.genre_ids.some((id) => FORBIDDEN_GENRES.includes(id));
-    if (hasForbidden) return false;
+    const genres = movie.genre_ids ?? [];
+
+    // 금지 장르 포함 시 전 연령 제외
+    if (genres.some((id) => FORBIDDEN_GENRES.includes(id))) return false;
+
     if (mode === "kids") {
-      return movie.genre_ids.includes(16) && movie.genre_ids.includes(10751);
+      // 키즈: 애니메이션·가족·키즈 장르 중 하나 이상 포함
+      return genres.some((id) => KIDS_GENRES.includes(id));
     }
+
+    // 주니어: 금지 장르 없으면 키즈 콘텐츠 포함 전부 허용
     return true;
   });
 }
