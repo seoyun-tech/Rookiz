@@ -370,6 +370,11 @@ export default function DetailPage({ movieId: propMovieId, mediaType: propMediaT
     else navigate(`/movie/${m.id}?type=${type}`);
   };
 
+  const handleViewAll = () => {
+    if (onClose) onClose();
+    navigate(`/search?q=${encodeURIComponent(title)}&mode=${ageGroup ?? "kids"}`);
+  };
+
   // 연령 필터 상수
   const FORBIDDEN_G = [18, 10749, 27, 80, 53, 9648, 10752, 36];
   const KIDS_G      = [16, 10751, 10762];
@@ -552,7 +557,7 @@ export default function DetailPage({ movieId: propMovieId, mediaType: propMediaT
       {filteredSimilar.length > 0 && (
         <section className="px-4 md:px-5 pb-6 md:pb-8 flex flex-col gap-3 md:gap-4">
           {/* SectionHeader 컴포지션 */}
-          <SectionHeader title="이런 콘텐츠도 있어요" onViewAll={() => {}} />
+          <SectionHeader title="이런 콘텐츠도 있어요" onViewAll={handleViewAll} />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {filteredSimilar.slice(0, 4).map((m) => (
               <div key={m.id} className="cursor-pointer" onClick={() => handleSimilarClick(m)}>
