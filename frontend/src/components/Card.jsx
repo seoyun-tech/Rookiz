@@ -24,7 +24,7 @@ export function Card({ variant = 'default', title, image, size = 'md', badge, cl
   if (variant === 'poster') {
     return (
       <div
-        className="aspect-[3/4] md:h-[360px] rounded-2xl md:rounded-4xl overflow-hidden relative group cursor-pointer shadow-sm"
+        className="w-full aspect-[3/4] rounded-2xl md:rounded-4xl overflow-hidden relative group cursor-pointer shadow-sm"
         onClick={onClick}
       >
         {!posterLoaded && <Skeleton />}

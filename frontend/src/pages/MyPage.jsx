@@ -6,7 +6,7 @@ import { Nav } from '../components/Nav';
 import { Footer } from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faUser, faAward, faLeaf, faBan, faCheck, faCalendarDays, faPencil,
+  faUser, faAward, faMedal, faLeaf, faBan, faCheck, faCalendarDays, faPencil,
   faArrowTrendUp, faClock, faUserShield, faCircleCheck, faCircleMinus,
   faCirclePlus, faUserCheck, faCircleExclamation, faShieldHeart,
   faCamera, faXmark, faLock, faCircleCheck as faCircleCheckSolid,
@@ -415,7 +415,7 @@ export default function MyPage() {
         {/* ── 칭찬 하루 섹션 ── */}
         <section className="flex flex-col gap-5 md:gap-7">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">칭찬 하루</h2>
-          <div className="flex flex-wrap gap-x-5 gap-y-3 md:gap-x-8 lg:gap-x-12.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 md:gap-8 lg:gap-10">
             {Array(10).fill(null).map((_, i) => {
               const style = i < history.length
                 ? getTodayStyle(history[i])
@@ -423,10 +423,10 @@ export default function MyPage() {
               return (
                 <div
                   key={i}
-                  className={`h-25 w-sticker rounded-full flex items-center justify-center transition-all duration-300 border-[3px] ${style.btn}`}
+                  className={`h-25 w-full rounded-full flex items-center justify-center transition-all duration-300 border-[3px] ${style.btn}`}
                 >
                   <FontAwesomeIcon
-                    icon={faAward}
+                    icon={faMedal}
                     className={`text-4.5xl transition-colors duration-300 ${style.icon}`}
                   />
                 </div>

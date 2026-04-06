@@ -30,7 +30,7 @@ export function ContentRow({ title, items, layout = "scroll", badge, filter, onI
     }
 
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-10">
         {list.map((item) => (
           <Card key={item.id} variant="poster" image={getImageUrl(item.poster_path)} title={item.name || item.title} badge={getBadge(item)} onClick={() => onItemClick?.(item)} />
         ))}
