@@ -73,7 +73,7 @@ HF_TOKEN=your_huggingface_token
 
 ## 팀 정보
 
-- **팀 규모**: 3명
+- **팀 규모**: 1명
 - **개발 기간**: 2026.03.24 ~ 2026.04.03 (9일)
 - **개발 방식**: Gemini CLI / Claude CLI 바이브 코딩
 - **디자인 도구**: Google Stitch, Figma
