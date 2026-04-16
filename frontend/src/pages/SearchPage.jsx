@@ -1,27 +1,41 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
-import { searchMovies, fetchSimilarMovies, getImageUrl } from '../api/api';
+import { useLocation, useSearchParams } from 'react-router';
+import { searchMovies, getImageUrl } from '../api/api';
 import { Nav } from '../components/Nav';
 import { Footer } from '../components/Footer';
 import { Searchbar } from '../components/Searchbar';
 import { ContentRow } from '../components/ContentRow';
 import { Card } from '../components/Card';
+import { useMovieModal } from '../context/MovieModalContext';
 
-const GENRE_DRAMA = 18;
-const GENRE_ROMANCE = 10749;
-const GENRE_HORROR = 27;
-const GENRE_CRIME = 80;
-const GENRE_THRILLER = 53;
-const GENRE_MYSTERY = 9648;
-const FORBIDDEN_GENRES = [GENRE_DRAMA, GENRE_ROMANCE, GENRE_HORROR, GENRE_CRIME, GENRE_THRILLER, GENRE_MYSTERY];
+// 성인/청소년 대상 장르 — 키즈·주니어 모두 제외
+const FORBIDDEN_GENRES = [
+  18,    // 드라마
+  10749, // 로맨스
+  27,    // 공포
+  80,    // 범죄
+  53,    // 스릴러
+  9648,  // 미스터리
+  10752, // 전쟁
+  36,    // 역사
+];
+
+// 키즈 전용 장르 — 애니메이션 / 가족 / 키즈(TV)
+const KIDS_GENRES = [16, 10751, 10762];
 
 function filterByAge(movies, mode) {
   return movies.filter((movie) => {
-    const hasForbidden = movie.genre_ids.some((id) => FORBIDDEN_GENRES.includes(id));
-    if (hasForbidden) return false;
+    const genres = movie.genre_ids ?? [];
+
+    // 금지 장르 포함 시 전 연령 제외
+    if (genres.some((id) => FORBIDDEN_GENRES.includes(id))) return false;
+
     if (mode === "kids") {
-      return movie.genre_ids.includes(16) && movie.genre_ids.includes(10751);
+      // 키즈: 애니메이션·가족·키즈 장르 중 하나 이상 포함
+      return genres.some((id) => KIDS_GENRES.includes(id));
     }
+
+    // 주니어: 금지 장르 없으면 키즈 콘텐츠 포함 전부 허용
     return true;
   });
 }
@@ -30,24 +44,30 @@ export default function SearchPage() {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const { openMovie } = useMovieModal();
 
+  const paramMode = searchParams.get('mode');
   const isJuniorPath = location.pathname.includes('junior');
-  const currentMode = isJuniorPath ? 'junior' : 'kids';
+  const currentMode = paramMode ?? (isJuniorPath ? 'junior' : 'kids');
 
   useEffect(() => {
     setResults([]);
     setQuery('');
-    setSelectedMovie(null);
   }, [location.pathname]);
+
+  // URL에 q 파라미터가 있으면 자동 검색
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) handleSearch(q);
+  }, [searchParams.get('q')]);
 
   const handleSearch = async (searchTerm) => {
     if (!searchTerm?.trim()) return;
     setIsLoading(true);
     setQuery(searchTerm);
-    setSelectedMovie(null);
 
     try {
       const movies = await searchMovies(searchTerm);
@@ -59,19 +79,10 @@ export default function SearchPage() {
     }
   };
 
-  const handleCardClick = async (movie) => {
-    setSelectedMovie(movie);
-    setIsLoading(true);
-    
-    try {
-      const similarMovies = await fetchSimilarMovies(movie.id);
-      setResults(filterByAge(similarMovies, currentMode));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+
+  const handleCardClick = (movie) => {
+    const mediaType = movie.first_air_date ? "tv" : "movie";
+    openMovie(movie.id, mediaType, currentMode);
   };
 
   return (
@@ -86,49 +97,16 @@ export default function SearchPage() {
           <Searchbar className="w-full max-w-searchbar" onSearch={handleSearch} />
         </div>
 
-        {selectedMovie && (
-          <div className="bg-gray-50 rounded-4xl p-5 md:p-8 lg:p-12 flex flex-col md:flex-row gap-5 md:gap-8 items-center border border-gray-100">
-            <img
-              src={getImageUrl(selectedMovie.poster_path)}
-              className="w-36 md:w-48 lg:w-64 rounded-card-xl shadow-xl shrink-0"
-              alt={selectedMovie.title}
-            />
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2">
-                <span className={`px-4 py-1 rounded-full font-bold text-sm border ${
-                  currentMode === 'junior' 
-                  ? 'bg-blue-50 border-blue-200 text-blue-600' 
-                  : 'bg-primary-50 border-primary-200 text-primary-600'
-                }`}>
-                  {currentMode === 'junior' ? '🎒 주니어 8~12세 안심 시청' : '🐥 키즈 4~7세 안심 시청'}
-                </span>
-              </div>
-
-              <h2 className="text-xl md:text-3xl lg:text-5xl font-black">{selectedMovie.title}</h2>
-              <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-6 md:leading-8 max-w-2xl">
-                {selectedMovie.overview || "상세 정보가 준비되지 않았습니다."}
-              </p>
-              
-              <button 
-                onClick={() => { setSelectedMovie(null); handleSearch(query); }} 
-                className="w-fit px-8 py-3 bg-white border border-gray-200 rounded-full font-bold text-gray-500 hover:text-primary-600 cursor-pointer shadow-sm"
-              >
-                검색 결과로 돌아가기 ✕
-              </button>
-            </div>
-          </div>
-        )}
-
-        <ContentRow title={selectedMovie ? "추천 연관 영상" : (query ? `'${query}' 검색 결과` : "인기 영상")}>
+        <ContentRow title={query ? `'${query}' 검색 결과` : "인기 영상"}>
           {isLoading ? (
             <div className="w-full py-20 text-center font-bold text-gray-400 text-2xl">검색 중...</div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-10">
               {results.length > 0 ? (
                 results.map(movie => (
-                  <Card 
+                  <Card
                     key={movie.id}
-                    title={movie.title}
+                    title={movie.title || movie.name}
                     image={getImageUrl(movie.poster_path)}
                     onClick={() => handleCardClick(movie)}
                     className="cursor-pointer aspect-[3/4] rounded-4xl"
